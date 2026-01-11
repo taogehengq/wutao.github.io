@@ -1,0 +1,727 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>项目经验 | WT's Blog</title><meta name="author" content="WT"><meta name="copyright" content="WT"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Project Experience1 rag知识库项目1.1 工程化落地我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目经验">
+<meta property="og:url" content="https://wutaoblog.github.io/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/index.html">
+<meta property="og:site_name" content="WT&#39;s Blog">
+<meta property="og:description" content="Project Experience1 rag知识库项目1.1 工程化落地我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png">
+<meta property="article:published_time" content="2026-01-11T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-11T07:09:21.903Z">
+<meta property="article:author" content="WT">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="经验">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "项目经验",
+  "url": "https://wutaoblog.github.io/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/",
+  "image": "https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png",
+  "datePublished": "2026-01-11T02:00:00.000Z",
+  "dateModified": "2026-01-11T07:09:21.903Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "WT",
+      "url": "https://wutaoblog.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wutaoblog.github.io/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '项目经验',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(https://s2.loli.net/2024/01/08/2NLQjw1oVCxdg4v.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">WT's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">项目经验</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">项目经验</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-11T07:09:21.903Z" title="更新于 2026-01-11 15:09:21">2026-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BB%8F%E9%AA%8C/">经验</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Project-Experience"><a href="#Project-Experience" class="headerlink" title="Project Experience"></a>Project Experience</h1><h2 id="1-rag知识库项目"><a href="#1-rag知识库项目" class="headerlink" title="1 rag知识库项目"></a>1 rag知识库项目</h2><h3 id="1-1-工程化落地"><a href="#1-1-工程化落地" class="headerlink" title="1.1 工程化落地"></a>1.1 工程化落地</h3><p>我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大模型進行輸出）。</p>
+<p><code>核心流程：原始文档 → 文档预处理（结构化+清洗）→ 文档切分+增强 → 向量化/索引构建 → 检索（多策略召回）→ 重排（精排）→ 提示工程+生成 → 输出/反馈优化</code></p>
+<p><code>核心逻辑：用标准化的文档处理保证数据质量 → 用多策略检索保证召回率 → 用重排保证准确率 → 用提示工程 + 幻觉控制保证生成质量 → 用工程化手段保证稳定性。</code></p>
+<h4 id="阶段-1：数据层：文档获取-版本管理（解决-“数据来源可靠-版本可追溯”）"><a href="#阶段-1：数据层：文档获取-版本管理（解决-“数据来源可靠-版本可追溯”）" class="headerlink" title="阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）"></a>阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）</h4><p>核心目标：从多渠道获取原始文档，建立「文档版本控制机制」，避免数据丢失或版本混乱，为后续处理提供 “干净、可追溯的数据源”。</p>
+<h4 id="阶段-2：文档理解层：解析→结构化→切分→清洗对齐（解决-“机器能读懂文档”）"><a href="#阶段-2：文档理解层：解析→结构化→切分→清洗对齐（解决-“机器能读懂文档”）" class="headerlink" title="阶段 2：文档理解层：解析→结构化→切分→清洗对齐（解决 “机器能读懂文档”）"></a>阶段 2：文档理解层：解析→结构化→切分→清洗对齐（解决 “机器能读懂文档”）</h4><p>核心目标：将非结构化文档（如乱码表格、公式、图片文本）转化为「机器可处理的结构化文本片段」，避免因 “文本碎片化” 或 “格式混乱” 导致后续检索 &#x2F; 生成失效。</p>
+<h4 id="阶段-3：索引构建层：向量化→稀疏索引→元数据索引→增量-版本控制（解决-“高效检索-可维护”）"><a href="#阶段-3：索引构建层：向量化→稀疏索引→元数据索引→增量-版本控制（解决-“高效检索-可维护”）" class="headerlink" title="阶段 3：索引构建层：向量化→稀疏索引→元数据索引→增量 &#x2F; 版本控制（解决 “高效检索 + 可维护”）"></a>阶段 3：索引构建层：向量化→稀疏索引→元数据索引→增量 &#x2F; 版本控制（解决 “高效检索 + 可维护”）</h4><p>核心目标：将清洗后的文本片段转化为「可快速检索的索引」，同时支持增量更新和版本管理，平衡检索速度、精度与维护成本。</p>
+<h4 id="阶段-4：检索层：Query-理解→多路召回→ReRank→Context-构建（解决-“召回准-排序优”）"><a href="#阶段-4：检索层：Query-理解→多路召回→ReRank→Context-构建（解决-“召回准-排序优”）" class="headerlink" title="阶段 4：检索层：Query 理解→多路召回→ReRank→Context 构建（解决 “召回准 + 排序优”）"></a>阶段 4：检索层：Query 理解→多路召回→ReRank→Context 构建（解决 “召回准 + 排序优”）</h4><p>核心目标：精准理解用户 Query，从索引中召回「高度相关的片段」，通过重排优化排序，最终构建 “简洁、有效的上下文” 供生成层使用。</p>
+<h4 id="阶段-5：生成层：Prompt-对齐→Grounding-Citation→输出控制（解决-“答案准-无幻觉-格式规范”）"><a href="#阶段-5：生成层：Prompt-对齐→Grounding-Citation→输出控制（解决-“答案准-无幻觉-格式规范”）" class="headerlink" title="阶段 5：生成层：Prompt 对齐→Grounding&#x2F;Citation→输出控制（解决 “答案准 + 无幻觉 + 格式规范”）"></a>阶段 5：生成层：Prompt 对齐→Grounding&#x2F;Citation→输出控制（解决 “答案准 + 无幻觉 + 格式规范”）</h4><p>核心目标：基于构建好的 Context，生成「贴合 Query、符合业务格式、可溯源」的答案，避免幻觉，确保答案可信度。</p>
+<h4 id="阶段-6：评估-优化层：检索评估→生成评估→在线反馈-A-B（解决-“持续迭代，提升效果”）"><a href="#阶段-6：评估-优化层：检索评估→生成评估→在线反馈-A-B（解决-“持续迭代，提升效果”）" class="headerlink" title="阶段 6：评估 &amp; 优化层：检索评估→生成评估→在线反馈 &amp; A&#x2F;B（解决 “持续迭代，提升效果”）"></a>阶段 6：评估 &amp; 优化层：检索评估→生成评估→在线反馈 &amp; A&#x2F;B（解决 “持续迭代，提升效果”）</h4><p>核心目标：建立「离线 + 在线」的评估体系，量化 RAG 系统效果，通过反馈和 A&#x2F;B 测试持续优化各环节。</p>
+<h4 id="阶段-7：工程支撑：缓存-并发-降级→监控-成本-安全（解决-“系统稳-成本可控-无风险”）"><a href="#阶段-7：工程支撑：缓存-并发-降级→监控-成本-安全（解决-“系统稳-成本可控-无风险”）" class="headerlink" title="阶段 7：工程支撑：缓存 &#x2F; 并发 &#x2F; 降级→监控 &#x2F; 成本 &#x2F; 安全（解决 “系统稳 + 成本可控 + 无风险”）"></a>阶段 7：工程支撑：缓存 &#x2F; 并发 &#x2F; 降级→监控 &#x2F; 成本 &#x2F; 安全（解决 “系统稳 + 成本可控 + 无风险”）</h4><p>缓存机制Redis&#x2F;Memcached，异步处理Celery&#x2F;RabbitMQ&#x2F;Kafka，监控 &#x2F; 日志Prometheus&#x2F;Grafana（监控检索耗时 &#x2F; 召回率）&#x2F;ELK（日志收集），迭代优化反馈系统（用户评分 &#x2F; 人工标注）&#x2F; 离线评估（MRR&#x2F;NDCG）&#x2F; 模型微调</p>
+<p>你的核心理解是正确的，工程化落地需补充：</p>
+<ol>
+<li>文档处理不是 “仅转 MD”，而是「格式转换 + 清洗 + 语义切分 + 增强」的标准化流程，尤其要处理表格 &#x2F; 公式等非纯文本；</li>
+<li>检索不是 “单一 BGE-M3 向量化检索”，而是「查询改写 + BM25 粗筛 + 向量检索 + RRF 融合」的多策略召回，再叠加 Rerank 精排；</li>
+<li>生成环节的 “对齐算法” 本质是「提示工程约束 + 幻觉控制 + 来源校验」，而非单一算法，LangChain 是串联工具而非核心算法；</li>
+<li>工程化落地必须补充「缓存、异步、监控、迭代优化」，否则无法稳定上线。</li>
+</ol>
+<h3 id="1-2具體操作"><a href="#1-2具體操作" class="headerlink" title="1.2具體操作"></a>1.2具體操作</h3><h4 id="1-1-处理文档"><a href="#1-1-处理文档" class="headerlink" title="1.1 处理文档"></a>1.1 处理文档</h4><ul>
+<li><p><strong>采集来源</strong>：结构化数据（数据库表、Excel）、非结构化数据（PDF、Word、HTML、_txt）、半结构化数据（JSON、XML）、多模态数据（图片中的文字 OCR、音频转文字）。</p>
+</li>
+<li><p><strong>清洗手段</strong>：去重（如基于文本哈希 &#x2F; 嵌入的重复内容过滤）、降噪（去除广告、无效符号、乱码）、格式统一（如 PDF 解析为 markdown，保留标题层级 &#x2F; 表格结构）。</p>
+</li>
+<li><p><strong>文本分块（Chunking）</strong>：核心目标：将长文档拆分为 “语义完整且长度适配模型输入” 的片段（避免因文档过长导致检索粒度粗、上下文丢失）。</p>
+<ul>
+<li><p>主流方案：</p>
+</li>
+<li><p>基础方案：固定长度分块（如每 500 字符切分，保留 100 字符重叠以衔接上下文）；</p>
+<ul>
+<li>优化方案：语义分块（基于句子嵌入聚类、段落边界检测、文档结构（标题 &#x2F; 章节）拆分，如用<code>LangChain</code>的<code>RecursiveCharacterTextSplitter</code>）；</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>过滤与路由</strong>：通过规则 &#x2F; 模型对问题分类，定向检索对应知识库（如用户问 “产品定价”→仅检索 “价格政策文档”，而非全量知识库），减少无效检索。</p>
+</li>
+</ul>
+<h4 id="1-2-写提示词"><a href="#1-2-写提示词" class="headerlink" title="1.2 写提示词"></a>1.2 写提示词</h4><ul>
+<li>核心逻辑：明确告知大模型 “使用检索到的知识回答，不编造信息”</li>
+<li>多轮对话中的知识管理<ul>
+<li>记录历史检索结果与回答，避免重复检索（如用户追问 “上述市场规模的数据源是什么”，直接复用前一轮的 Chunk，无需重新检索），常用工具：<code>LangChain Memory</code>、<code>LlamaIndex ChatEngine</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-3-搭建工作流"><a href="#1-3-搭建工作流" class="headerlink" title="1.3 搭建工作流"></a>1.3 搭建工作流</h4><h4 id="1-4-接入mcp"><a href="#1-4-接入mcp" class="headerlink" title="1.4 接入mcp"></a>1.4 接入mcp</h4><h3 id="1-3-进阶"><a href="#1-3-进阶" class="headerlink" title="1.3 进阶"></a>1.3 进阶</h3><h4 id="1-4-Re-Ranking算法优化"><a href="#1-4-Re-Ranking算法优化" class="headerlink" title="1.4 Re-Ranking算法优化"></a>1.4 <strong>Re-Ranking</strong>算法优化</h4><ul>
+<li><strong>重排序（Re-Ranking）</strong>：对初步检索结果二次排序（如向量检索召回 Top50 后，用轻量模型（如 Cross-Encoder）计算 “问题与 Chunk 的细粒度相似度”，筛选 Top10），解决 “向量检索可能因嵌入误差导致的相关性偏差”。</li>
+</ul>
+<h4 id="1-5-向量数据库muilvs使用"><a href="#1-5-向量数据库muilvs使用" class="headerlink" title="1.5 向量数据库muilvs使用"></a>1.5 向量数据库muilvs使用</h4><ul>
+<li>选型依据：数据量（小数据量用 FAISS，大数据量用 Milvus&#x2F;Pinecone）、检索速度（需支持索引优化，如 Milvus 的 IVF_FLAT 索引）、部署方式（本地部署 &#x2F; 云服务）。</li>
+</ul>
+<h4 id="1-6-检索优化-混合检索"><a href="#1-6-检索优化-混合检索" class="headerlink" title="1.6 检索优化-混合检索"></a>1.6 检索优化-混合检索</h4><ol>
+<li>Query 理解 意图识别：轻量分类模型（如 TinyBERT 分类 “事实查询 &#x2F; 步骤查询 &#x2F; 故障排查”）；Query 改写：LLM（如 GPT-3.5&#x2F;BGE-M3）改写模糊 Query（如 “Python 内存问题”→“Python 内存泄漏的原因及解决步骤”）；关键词提取：TF-IDF&#x2F;RAKE（提取 Query 核心词，如 “Python”“内存泄漏”）</li>
+<li>多路召回（Dense&#x2F;Sparse&#x2F;Hybrid） 密集召回：BGE-M3 向量检索（Top 100）；稀疏召回：BM25 关键词检索（Top 200）；混合融合：RRF 算法（Reciprocal Rank Fusion，融合两路结果，k&#x3D;60）</li>
+<li>ReRank（重排）模型选型：BGE-Reranker-base&#x2F;large（中文首选）、Cross-Encoder（ms-marco-MiniLM，英文首选）； 重排逻辑：输入 “Query + 片段”，输出相关性得分，按得分排序</li>
+<li>Context 构建 片段筛选：保留 ReRank 后 Top 5~20 片段（避免超出 LLM 上下文窗口）；片段排序：按 “相关性得分降序 + 来源时间升序”（新文档优先）；格式整理：用 Markdown 分块展示（如 “### 来源：《Python 指南》P23\n 内容：…”）</li>
+</ol>
+<h4 id="1-7-查询理解-意图识别"><a href="#1-7-查询理解-意图识别" class="headerlink" title="1.7 查询理解-意图识别"></a>1.7 查询理解-意图识别</h4><ul>
+<li><strong>查询重写（Query Rewriting）</strong>：将模糊问题优化为精准检索词（如用户问 “怎么解决模型过拟合”→重写为 “机器学习模型过拟合解决方案：正则化 &#x2F; 数据增强 &#x2F; 早停”），常用方法：大模型生成改写后的查询、基于用户历史对话补全上下文。</li>
+<li>对高频查询（如 “公司考勤制度”）的检索结果缓存（用 Redis），避免重复计算向量和检索，提升响应速度（毫秒级→微秒级）。</li>
+</ul>
+<h4 id="1-8-文本生成"><a href="#1-8-文本生成" class="headerlink" title="1.8 文本生成"></a>1.8 文本生成</h4><ul>
+<li>幻觉抑制：<ul>
+<li>技术手段：1. Prompt 约束（明确 “无知识不回答”）；2. 事实核查（生成后用检索知识交叉验证，如 “生成内容中的‘35% 增长率’是否在 Chunk1 中存在”）；3. 引用标注（要求生成内容关联具体 Chunk 来源，便于人工追溯）。</li>
+</ul>
+</li>
+<li>格式优化：<ul>
+<li>针对特定场景定制输出格式（如技术文档→分 “问题原因 &#x2F; 解决方案 &#x2F; 步骤”，财务数据→用表格呈现），通过 Prompt 指令强制规范（如 “回答需包含‘核心结论 + 数据支撑 + 建议’三部分”）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-9-可觀測性"><a href="#1-9-可觀測性" class="headerlink" title="1.9 可觀測性"></a>1.9 可觀測性</h4><ul>
+<li>关键指标监控：检索召回率（相关 Chunk 是否被召回）、生成准确率（是否与检索知识一致）、响应时间（检索 + 生成总耗时）；</li>
+<li>日志记录：用户查询、检索结果、生成内容、错误信息（如检索超时、模型调用失败），用于后续问题排查与系统优化。</li>
+</ul>
+<h3 id="1-4总结"><a href="#1-4总结" class="headerlink" title="1.4总结"></a>1.4总结</h3><h4 id="1-10-项目技术难点"><a href="#1-10-项目技术难点" class="headerlink" title="1.10 项目技术难点"></a>1.10 项目技术难点</h4><ol>
+<li>数据层面：知识来源的 “质量与动态性” 问题</li>
+</ol>
+<p><strong>困难 1：数据质量差，导致检索 “无效知识”</strong></p>
+<p><strong>困难 2：知识动态更新难，导致 “回答过时”</strong></p>
+<ol start="2">
+<li>检索层面：“召回率与精确率” 的平衡难题</li>
+</ol>
+<p><strong>困难 1：语义歧义导致检索 “漏检 &#x2F; 误检”</strong></p>
+<p><strong>困难 2：长文档分块（Chunking）的 “粒度困境”</strong></p>
+<p><strong>困难 3：向量检索的 “性能瓶颈”</strong></p>
+<ol start="3">
+<li>生成层面：“知识对齐” 与 “内容可用性” 问题</li>
+</ol>
+<p><strong>困难 1：生成内容与检索知识 “脱节”（幻觉）</strong></p>
+<p><strong>困难 2：生成内容 “冗余 &#x2F; 不聚焦”</strong></p>
+<ol start="4">
+<li>工程化层面：“系统集成” 与 “成本控制” 问题</li>
+</ol>
+<p><strong>困难 1：与现有业务系统 “集成难”</strong></p>
+<p><strong>困难 2：部署与运维 “成本高”</strong></p>
+<ul>
+<li>技术层面：需打通 “数据预处理→检索→生成→工程化” 全链路，重点解决 “分块粒度、检索精度、幻觉抑制” 三大关键问题；</li>
+<li>落地层面：需平衡 “效果（检索准、生成好）、效率（响应快、高并发）、成本（低算力、低调用费）”，避免盲目追求 “全量向量检索” 或 “大模型生成”，而是根据场景选择最优方案（如简单问题用全文检索 + 小模型，复杂问题用混合检索 + 大模型）。</li>
+</ul>
+<h2 id="FQA"><a href="#FQA" class="headerlink" title="FQA"></a>FQA</h2><ol>
+<li>如何把文本轉換為向量呢？</li>
+</ol>
+<p>BGE-M3 是北京智源研究院开发的多功能文本嵌入模型，在 RAG 系统中扮演 “<strong>知识翻译官</strong>“ 角色，将文本转化为向量索引，支撑高效检索。同时支持<strong>稠密检索</strong>（语义匹配）、<strong>稀疏检索</strong>（关键词匹配）和<strong>多向量检索</strong>（细粒度语义理解），<strong>匹配粒度偏粗</strong>，<strong>未利用交互信息</strong></p>
+<p><strong>长文本专家</strong>：</p>
+<ul>
+<li><strong>Voyage-Context-3</strong>：一次性处理整文档生成全局感知嵌入，解决分块导致的上下文丢失问题，向量数据库成本降低 200 倍</li>
+</ul>
+<p><strong>结构化数据特化</strong>：</p>
+<ul>
+<li><strong>SQLNet</strong>：将 SQL 查询与表格结构映射到统一向量空间，支持数据库智能查询</li>
+</ul>
+<p> 重排模型：RAG 的 “筛选器”</p>
+<p>Rerank 算法（如 Cross-Encoder 类模型）的优势恰好是「细粒度交互匹配」—— 它会将「查询 + 文档」作为整体输入模型，逐 token 分析两者的语义交互，能更精准判断 “文档是否真正回答了查询”。 并非所有 BGE-M3 一体化检索场景都需要 Rerank，需根据「精度需求」和「成本预算」判断：</p>
+<ul>
+<li><strong>BGE-Reranker-v2 系列</strong>：<ul>
+<li>BGE-Reranker-v2-M3 (568M 参数)：轻量级重排，多语言支持，适合实时检索</li>
+<li>BGE-Reranker-v2-Gemma (2.51B 参数)：高性能重排，适合要求精准度的企业级应用</li>
+</ul>
+</li>
+<li><strong>Cross-Encoder 系列</strong>：<ul>
+<li>ms-marco-MiniLM-L-12-v2：轻量级重排器，参数仅 1.09 亿，推理速度快</li>
+<li>Cohere Rerank：专为排序优化，提升检索结果相关性</li>
+</ul>
+</li>
+</ul>
+<p><strong>作用</strong>：对初始检索结果重新排序，将最相关文档置顶，提升生成质量，减少幻觉风险。</p>
+<ol start="2">
+<li>为什么在你的项目中选择（Milvus&#x2F;FAISS&#x2F;Pinecone&#x2F;Elasticsearch）作为向量引擎？你做了哪些对比指标？</li>
+<li>解释混合检索（BM25 + 向量）是如何设计、如何合并评分并最终排序的。</li>
+<li>如果要把一个多步骤 Agent（Planner→Executor→Tool）产品化，你的核心设计原则是什么？如何做权限控制与审计？</li>
+<li>Agent 在执行过程中调用第三方 API 频繁失败导致任务积压，怎样设计系统以降低影响？</li>
+<li>给出一个 Prompt 模板化与版本化的实践方案，以及如何做 A&#x2F;B 测试 Prompt。</li>
+<li>设计检索结果的重排序函数（结合BM25得分和向量相似度），写出伪算法并说明如何调参。</li>
+<li>列出你会监控的 8 个关键指标并说明每个指标的告警阈值&#x2F;触发逻辑。</li>
+<li>描述一次你把一个复杂功能（例如增量索引或Agent回滚）从设计到交付的全过程（任务拆分、验收标准、风险控制）。</li>
+<li>开源Sentence Bert Embedding 模型</li>
+</ol>
+<h1 id="2-Agent-RAG-Agenic项目"><a href="#2-Agent-RAG-Agenic项目" class="headerlink" title="2. Agent RAG Agenic项目"></a>2. Agent RAG Agenic项目</h1><p>2.1 数据库查询</p>
+<p>2.2 旅游规划</p>
+<p>2.3 安全预警</p>
+<h3 id="Agent-构建成功的核心关键点"><a href="#Agent-构建成功的核心关键点" class="headerlink" title="Agent 构建成功的核心关键点"></a>Agent 构建成功的核心关键点</h3><p><code>Agent 构建的核心是实现「感知→规划→执行→反思→记忆→反馈」的全闭环</code></p>
+<table>
+<thead>
+<tr>
+<th>核心环节</th>
+<th>关键目标</th>
+<th>核心判断标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任务理解 &amp; 感知</td>
+<td>精准解析用户意图、多上下文整合</td>
+<td>能处理模糊 &#x2F; 复杂需求（如 “帮我优化服务器 Python 内存问题”），提取关键参数（IP、进程 ID、故障特征）</td>
+</tr>
+<tr>
+<td>规划（Plan）</td>
+<td>拆解复杂任务为可执行子步骤</td>
+<td>子步骤符合逻辑（如 “排查内存泄漏→生成脚本→验证效果”），支持分支 &#x2F; 循环（如 “脚本执行失败则调整参数重试”）</td>
+</tr>
+<tr>
+<td>工具调用</td>
+<td>自主选择 &#x2F; 执行工具，处理工具结果</td>
+<td>能精准匹配工具（如 “查知识用 RAG、算数据用计算器、执行命令用 SSH API”），处理工具异常（超时 &#x2F; 失败）</td>
+</tr>
+<tr>
+<td>反思 &amp; 闭环</td>
+<td>校验执行结果，修正错误策略</td>
+<td>能识别 “检索结果无效 &#x2F; 脚本执行失败”，并自动调整（如改写 Query、重新生成脚本）</td>
+</tr>
+<tr>
+<td>记忆管理</td>
+<td>存储 &#x2F; 检索 &#x2F; 更新用户偏好 &#x2F; 历史任务</td>
+<td>能复用历史结果（如 “用户上次的服务器配置”），避免重复操作</td>
+</tr>
+<tr>
+<td>工程化落地</td>
+<td>稳定、可监控、可扩展</td>
+<td>支持高并发、状态可追溯、异常可降级</td>
+</tr>
+</tbody></table>
+<h3 id="Agent-构建所需的技术-算法-模型-工具-框架（分类梳理）"><a href="#Agent-构建所需的技术-算法-模型-工具-框架（分类梳理）" class="headerlink" title="Agent 构建所需的技术 &#x2F; 算法 &#x2F; 模型 &#x2F; 工具 &#x2F; 框架（分类梳理）"></a>Agent 构建所需的技术 &#x2F; 算法 &#x2F; 模型 &#x2F; 工具 &#x2F; 框架（分类梳理）</h3><h4 id="核心模型层（智能决策与生成）"><a href="#核心模型层（智能决策与生成）" class="headerlink" title="核心模型层（智能决策与生成）"></a>核心模型层（智能决策与生成）</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>选型 &#x2F; 技术</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>大语言模型（LLM）</td>
+<td>闭源：GPT-4&#x2F;Turbo、文心一言、通义千问开源：Llama 3、Qwen-2、InternLM</td>
+<td>任务理解、规划拆解、工具调用决策、反思校验、最终回复生成</td>
+</tr>
+<tr>
+<td>嵌入模型（Embedding）</td>
+<td>BGE-M3（首选）、BGE-large-zh、text-embedding-ada-002</td>
+<td>RAG 向量化、记忆检索、文本相似度校验</td>
+</tr>
+<tr>
+<td>轻量模型</td>
+<td>TinyBERT&#x2F;TextCNN（分类）、NER 模型（信息提取）</td>
+<td>快速意图识别、关键参数提取（IP &#x2F; 进程 ID）、日志关键词解析</td>
+</tr>
+</tbody></table>
+<h4 id="算法层（决策与优化）"><a href="#算法层（决策与优化）" class="headerlink" title="算法层（决策与优化）"></a>算法层（决策与优化）</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>核心算法</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>规划算法</td>
+<td>ReAct（Reason+Act）、CoT（思维链）、ToT（树状思考）</td>
+<td>任务拆解、子步骤优先级排序</td>
+</tr>
+<tr>
+<td>检索算法</td>
+<td>BM25（稀疏）、余弦相似度 &#x2F; 点积（密集）、RRF（混合融合）、ReRank（BGE-Reranker&#x2F;Cross-Encoder）</td>
+<td>RAG 多路召回、记忆检索、工具结果筛选</td>
+</tr>
+<tr>
+<td>状态机算法</td>
+<td>有限状态机（FSM）、分层状态机（HSM）</td>
+<td>Workflow 状态流转（如 “检索中→检索失败→重试检索”）</td>
+</tr>
+<tr>
+<td>反思算法</td>
+<td>自校验（LLM 自查结果）、关键词匹配（校验结果有效性）、指标对比（如内存前后差值）</td>
+<td>验证执行结果、识别错误、调整策略</td>
+</tr>
+</tbody></table>
+<h4 id="工具层（执行能力扩展）"><a href="#工具层（执行能力扩展）" class="headerlink" title="工具层（执行能力扩展）"></a>工具层（执行能力扩展）</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>核心工具</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>检索工具</td>
+<td>Milvus&#x2F;Zilliz（向量库）、Elasticsearch（稀疏索引）、LangChain Retriever</td>
+<td>RAG 文档检索、记忆检索</td>
+</tr>
+<tr>
+<td>执行工具</td>
+<td>Paramiko（SSH 执行）、Requests（API 调用）、Python 代码执行器、计算器</td>
+<td>服务器操作、调用监控 API、数据计算</td>
+</tr>
+<tr>
+<td>解析工具</td>
+<td>PyMuPDF&#x2F;PDFPlumber（文档解析）、Whisper（音频转写）、PP-OCR（图片 OCR）</td>
+<td>处理多模态输入（PDF &#x2F; 图片 &#x2F; 音频）</td>
+</tr>
+<tr>
+<td>监控 &#x2F; 日志工具</td>
+<td>Prometheus&#x2F;Grafana（监控）、ELK（日志）、Redis（状态存储）</td>
+<td>状态监控、事件溯源、故障排查</td>
+</tr>
+</tbody></table>
+<h4 id="框架层（工程化封装）"><a href="#框架层（工程化封装）" class="headerlink" title="框架层（工程化封装）"></a>框架层（工程化封装）</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>核心框架</th>
+<th>核心价值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agent 核心框架</td>
+<td>LangChain&#x2F;LangGraph（首选）、AutoGPT、MetaGPT</td>
+<td>封装工具调用、记忆管理、Workflow &#x2F; 状态机、LLM 调用</td>
+</tr>
+<tr>
+<td>工作流 &#x2F; 状态机框架</td>
+<td>Prefect&#x2F;Airflow（Workflow）、Transitions（状态机）、Temporal（分布式状态机）</td>
+<td>驱动状态流转、任务调度、分支 &#x2F; 循环执行</td>
+</tr>
+<tr>
+<td>工程化框架</td>
+<td>FastAPI（接口）、Celery（异步）、Docker&#x2F;K8s（部署）、Redis（缓存 &#x2F; 状态）</td>
+<td>高并发接口、异步任务处理、容器化部</td>
+</tr>
+</tbody></table>
+<h3 id="场景：用户需求-→-“我的服务器（192-168-1-100）Python-进程-12345-内存飙升，帮我排查原因并修复”"><a href="#场景：用户需求-→-“我的服务器（192-168-1-100）Python-进程-12345-内存飙升，帮我排查原因并修复”" class="headerlink" title="场景：用户需求 → “我的服务器（192.168.1.100）Python 进程 12345 内存飙升，帮我排查原因并修复”"></a>场景：用户需求 → “我的服务器（192.168.1.100）Python 进程 12345 内存飙升，帮我排查原因并修复”</h3><h4 id="步骤-1：Agent-初始化-任务理解（LangChain-GPT-4）"><a href="#步骤-1：Agent-初始化-任务理解（LangChain-GPT-4）" class="headerlink" title="步骤 1：Agent 初始化 &amp; 任务理解（LangChain + GPT-4）"></a>步骤 1：Agent 初始化 &amp; 任务理解（LangChain + GPT-4）</h4><ul>
+<li>工具 &#x2F; 模型：LangChain <code>ChatPromptTemplate</code> + GPT-4 + NER 模型；</li>
+<li>执行：<ol>
+<li>NER 提取关键参数：服务器 IP（192.168.1.100）、进程 ID（12345）、故障类型（内存飙升）；</li>
+<li>GPT-4 解析意图：“排查 Python 进程内存泄漏 → 生成修复脚本 → 验证效果”；</li>
+<li>短期记忆（Redis）存储：<code>user:123:task:memory_leak</code> &#x3D; {IP:192.168.1.100, pid:12345, intent: 内存泄漏排查}。</li>
+</ol>
+</li>
+</ul>
+<h4 id="步骤-2：规划（Plan）拆解（LangChain-ReAct-GPT-4）"><a href="#步骤-2：规划（Plan）拆解（LangChain-ReAct-GPT-4）" class="headerlink" title="步骤 2：规划（Plan）拆解（LangChain ReAct + GPT-4）"></a>步骤 2：规划（Plan）拆解（LangChain ReAct + GPT-4）</h4><ul>
+<li><p>工具 &#x2F; 模型：LangChain <code>ReActAgent</code> + GPT-4；</p>
+</li>
+<li><p>生成执行计划：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">子步骤 1：调用 RAG 工具，检索“CentOS 系统 Python 进程内存泄漏排查方案”；</span><br><span class="line">子步骤 2：基于检索结果生成 Shell 排查脚本；</span><br><span class="line">子步骤 3：调用 SSH 工具执行脚本，获取内存泄漏日志；</span><br><span class="line">子步骤 4：基于日志生成修复脚本；</span><br><span class="line">子步骤 5：调用 SSH 工具执行修复脚本，验证内存是否下降；</span><br><span class="line">失败策略：任一子步骤失败，重试 2 次，仍失败则提示人工介入。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="步骤-3：执行-Plan（LangChain-多工具-状态机）"><a href="#步骤-3：执行-Plan（LangChain-多工具-状态机）" class="headerlink" title="步骤 3：执行 Plan（LangChain + 多工具 + 状态机）"></a>步骤 3：执行 Plan（LangChain + 多工具 + 状态机）</h4><ul>
+<li>子步骤 1：调用 RAG 工具（LangChain Retriever + BGE-M3 + Milvus）<ol>
+<li>生成检索词：LLM 自动生成多组检索词（“Python 进程 12345 内存泄漏”“CentOS Python 内存飙升”“requests 库内存泄漏”）；</li>
+<li>多路召回：BM25 检索关键词 + BGE-M3 向量检索语义 → RRF 融合 → BGE-Reranker 重排；</li>
+<li>反思校验：LLM 校验检索结果（是否含 “CentOS+Python + 内存排查”）→ 有效，进入下一步。</li>
+</ol>
+</li>
+<li>子步骤 2：生成排查脚本（GPT-4 + shellcheck）<ol>
+<li>GPT-4 生成脚本（含进程 12345 监控、memray 分析）；</li>
+<li>shellcheck 校验语法 → 有效，进入下一步。</li>
+</ol>
+</li>
+<li>子步骤 3：调用 SSH 工具（LangChain Tool + Paramiko）<ol>
+<li>从长期记忆（Milvus）读取用户存储的服务器账号密码（加密）；</li>
+<li>执行脚本 → 返回日志：“内存泄漏源于 requests 库连接池未释放”；</li>
+<li>反思校验：日志含 “内存泄漏原因”→ 有效，进入下一步。</li>
+</ol>
+</li>
+<li>子步骤 4-5：生成修复脚本 + 执行验证（同上）→ 验证结果：内存从 8GB 降至 2GB。</li>
+</ul>
+<h4 id="步骤-4：反思闭环（自定义校验逻辑-GPT-4）"><a href="#步骤-4：反思闭环（自定义校验逻辑-GPT-4）" class="headerlink" title="步骤 4：反思闭环（自定义校验逻辑 + GPT-4）"></a>步骤 4：反思闭环（自定义校验逻辑 + GPT-4）</h4><ul>
+<li>校验：对比修复前后内存指标（8GB→2GB）→ 达标；</li>
+<li>异常处理：若验证不达标 → 重新生成检索词（“requests 库连接池优化”）→ 重新执行 RAG + 生成脚本。</li>
+</ul>
+<h4 id="步骤-5：统一生成回复（GPT-4-LangChain-Prompt）"><a href="#步骤-5：统一生成回复（GPT-4-LangChain-Prompt）" class="headerlink" title="步骤 5：统一生成回复（GPT-4 + LangChain Prompt）"></a>步骤 5：统一生成回复（GPT-4 + LangChain Prompt）</h4><ul>
+<li><p>整合所有执行结果，按用户习惯（分点 + 脚本注释）生成回复：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 排查结果：Python 进程 12345 因 requests 库连接池未释放导致内存泄漏；</span><br><span class="line">2. 修复脚本：export REQUESTS_POOLSIZE=10  # 限制连接池大小；</span><br><span class="line">3. 验证效果：执行后 5 分钟内存降至 1.8GB，卡顿消失。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="步骤-6：记忆更新（Milvus-Redis）"><a href="#步骤-6：记忆更新（Milvus-Redis）" class="headerlink" title="步骤 6：记忆更新（Milvus + Redis）"></a>步骤 6：记忆更新（Milvus + Redis）</h4><ul>
+<li>长期记忆存储：<code>user:123:history:memory_leak</code> &#x3D; {IP:192.168.1.100, pid:12345, 原因:requests 连接池，修复方案：限制连接池大小}；</li>
+<li>后续用户问 “上次的内存泄漏方案”→ Agent 直接检索记忆，无需重新执行流程。</li>
+</ul>
+<h2 id="技術關鍵點理解"><a href="#技術關鍵點理解" class="headerlink" title="技術關鍵點理解"></a>技術關鍵點理解</h2><h3 id="各类状态机-Workflow-框架的关系与区别"><a href="#各类状态机-Workflow-框架的关系与区别" class="headerlink" title="各类状态机 &#x2F; Workflow 框架的关系与区别"></a>各类状态机 &#x2F; Workflow 框架的关系与区别</h3><p><strong>DAG 是 “静态流程结构”，状态机（FSM&#x2F;HSM）是 “动态决策逻辑”；各类框架是不同场景下的工程化实现，LangGraph&#x2F;Temporal 侧重 Agent 动态决策，Prefect&#x2F;Airflow 侧重批处理流程，Transitions 侧重轻量单机状态机</strong>。</p>
+<p>&#96;&#96;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">抽象模型层：DAG → 状态机（FSM → HSM）</span><br><span class="line">    ↓</span><br><span class="line">工程实现层：</span><br><span class="line">    ├─ 批处理Workflow：Prefect/Airflow（基于DAG）</span><br><span class="line">    ├─ 轻量状态机：Transitions（基于FSM）</span><br><span class="line">    ├─ 分布式状态机：Temporal（基于FSM/HSM）</span><br><span class="line">    └─ Agent专属状态机：LangGraph（基于FSM+DAG，适配LLM决策）</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>类型 &#x2F; 框架</th>
+<th>核心定义</th>
+<th>核心特点</th>
+<th>适用场景</th>
+<th>与 Agent 的适配性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DAG（有向无环图）</td>
+<td>静态流程模型：由 “节点（任务）+ 有向边（依赖）” 组成，无循环 &#x2F; 回溯，仅单向执行</td>
+<td>流程固定、可可视化、依赖清晰</td>
+<td>批处理任务（如数据 ETL、定时报表）、无分支 &#x2F; 重试的线性流程</td>
+<td>低（仅适配固定步骤，无自主决策）</td>
+</tr>
+<tr>
+<td>FSM（有限状态机）</td>
+<td>动态决策模型：基于 “当前状态 + 触发事件” 切换状态，支持分支 &#x2F; 循环 &#x2F; 重试</td>
+<td>状态明确、事件驱动、可追溯</td>
+<td>有状态切换的业务（如订单状态、Agent 任务执行）</td>
+<td>中高（Agent 核心决策模型）</td>
+</tr>
+<tr>
+<td>HSM（分层状态机）</td>
+<td>FSM 的扩展：将状态按层级划分（如 “执行中” 包含 “脚本执行”“API 调用” 子状态）</td>
+<td>简化复杂状态管理、状态复用</td>
+<td>超复杂状态场景（如分布式 Agent、多任务并行）</td>
+<td>高（适配多任务 Agent）</td>
+</tr>
+<tr>
+<td>Airflow</td>
+<td>基于 DAG 的批处理 Workflow 引擎：定义静态任务依赖，定时 &#x2F; 触发执行</td>
+<td>侧重 “调度”、可视化 DAG、社区成熟</td>
+<td>数据流水线、定时任务（如每天凌晨同步文档）</td>
+<td>低（仅能做 Agent 的固定子流程）</td>
+</tr>
+<tr>
+<td>Prefect</td>
+<td>基于 DAG 的现代 Workflow 引擎：支持动态 DAG、状态持久化，比 Airflow 灵活</td>
+<td>轻量、支持动态分支、适配云原生</td>
+<td>中小型批处理流程、简单 Agent 的固定步骤执行</td>
+<td>中（可做 Agent 的 Workflow 载体，但无原生状态机）</td>
+</tr>
+<tr>
+<td>Transitions</td>
+<td>Python 轻量 FSM 库：纯内存状态机，仅实现 FSM 核心逻辑（状态 + 事件 + 转移）</td>
+<td>极简、无依赖、开发快</td>
+<td>单机、轻量 Agent 的状态管理（如本地运维 Agent）</td>
+<td>中（轻量但无分布式 &#x2F; 持久化）</td>
+</tr>
+<tr>
+<td>Temporal</td>
+<td>分布式 FSM&#x2F;HSM 引擎：支持跨进程 &#x2F; 机器的状态持久化、故障恢复、超时重试</td>
+<td>分布式、高可用、状态永不丢失</td>
+<td>生产级分布式 Agent（如多节点运维 Agent、高并发客服 Agent）</td>
+<td>高（企业级 Agent 核心框架）</td>
+</tr>
+<tr>
+<td>LangGraph</td>
+<td>LangChain 旗下 Agent 专属状态机：融合 FSM+DAG，适配 LLM 决策 + 工具调用</td>
+<td>原生支持 LLM &#x2F; 工具调用、记忆联动、轻量化</td>
+<td>LLM 驱动的 Agent（如 RAG + 工具调用的智能体）</td>
+<td>极高（Agent 场景最优解）</td>
+</tr>
+</tbody></table>
+<h5 id="（1）DAG-vs-状态机（FSM-HSM）"><a href="#（1）DAG-vs-状态机（FSM-HSM）" class="headerlink" title="（1）DAG vs 状态机（FSM&#x2F;HSM）"></a>（1）DAG vs 状态机（FSM&#x2F;HSM）</h5><ul>
+<li><p><strong>DAG 是 “静态剧本”</strong>：提前写死所有步骤和依赖（如 “检索→生成→执行”），即使某步失败，也只能按预设规则终止 &#x2F; 重试，无 “自主调整”；</p>
+</li>
+<li><p>状态机是 “动态决策大脑”：不预设固定步骤，仅定义 “状态 - 事件 - 转移规则”（如 “检索失败→改写 Query 重试”“执行成功→验证效果”），Agent 可根据实时结果调整流程。</p>
+<p>✅ 例：Agent 处理 “内存泄漏排查”，DAG 只能按 “检索→生成→执行” 走；状态机可在 “执行失败” 时自动切换到 “反思调整脚本” 状态，再回到 “执行” 状态。</p>
+</li>
+</ul>
+<h5 id="（2）各类框架的核心差异"><a href="#（2）各类框架的核心差异" class="headerlink" title="（2）各类框架的核心差异"></a>（2）各类框架的核心差异</h5><ul>
+<li><strong>Airflow&#x2F;Prefect</strong>：本质是 “DAG 调度器”，适合 “无智能决策的固定流程”，若要适配 Agent，需额外封装状态机逻辑（如在 DAG 节点中加 if-else 判断状态）；</li>
+<li><strong>Transitions</strong>：轻量但 “单机 + 无持久化”，适合原型开发，生产环境易因进程崩溃丢失状态；</li>
+<li><strong>Temporal</strong>：分布式、高可用，但学习成本高，适合企业级 Agent（需跨机器 &#x2F; 团队协作）；</li>
+<li><strong>LangGraph</strong>：专为 Agent 设计，原生整合 LLM &#x2F; 工具 &#x2F; 记忆，无需额外封装，是中小规模 Agent 的首选（生产环境可结合 Temporal 做分布式扩展）。</li>
+</ul>
+<h4 id="状态机-Workflow-框架选型建议"><a href="#状态机-Workflow-框架选型建议" class="headerlink" title="状态机 &#x2F; Workflow 框架选型建议"></a>状态机 &#x2F; Workflow 框架选型建议</h4><table>
+<thead>
+<tr>
+<th>Agent 规模</th>
+<th>框架组合建议</th>
+<th>核心逻辑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原型 &#x2F; 轻量 Agent</td>
+<td>LangGraph（状态机）+ Transitions</td>
+<td>快速开发，适配 LLM 决策</td>
+</tr>
+<tr>
+<td>生产级单机 Agent</td>
+<td>LangGraph + Prefect</td>
+<td>状态机 + Workflow 调度，易监控</td>
+</tr>
+<tr>
+<td>分布式 Agent</td>
+<td>Temporal + LangGraph</td>
+<td>分布式状态持久化，高可用</td>
+</tr>
+<tr>
+<td>批处理子流程</td>
+<td>Airflow&#x2F;Prefect（DAG）</td>
+<td>固定步骤，定时执行</td>
+</tr>
+</tbody></table>
+<h3 id="NER-模型的核心作用（Agent-场景）"><a href="#NER-模型的核心作用（Agent-场景）" class="headerlink" title="NER 模型的核心作用（Agent 场景）"></a>NER 模型的核心作用（Agent 场景）</h3><p>NER（Named Entity Recognition，命名实体识别）是<strong>自然语言处理（NLP）任务</strong>，核心是从文本中提取 “具有特定语义的实体”，比如：</p>
+<ul>
+<li>通用实体：人名、地名、时间、机构名；</li>
+<li>业务实体：服务器 IP、进程 ID、故障类型、文档 ID、金额、订单号。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>作用</th>
+<th>具体应用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>精准解析用户需求</td>
+<td>从模糊 Query 中提取 Agent 执行所需的关键参数（如 IP、进程 ID、故障类型）</td>
+</tr>
+<tr>
+<td>优化 RAG 检索</td>
+<td>提取实体作为检索关键词（如用 “Python + 内存飙升” 替代模糊 Query，提升检索精度）</td>
+</tr>
+<tr>
+<td>工具调用参数校验</td>
+<td>校验工具调用的参数合法性（如判断 IP 格式是否正确、进程 ID 是否为数字）</td>
+</tr>
+<tr>
+<td>记忆存储索引</td>
+<td>用提取的实体作为记忆索引（如按 “IP 地址” 存储服务器历史故障）</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>场景类型</th>
+<th>模型选型</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>通用场景</td>
+<td>BERT-NER、RoBERTa-NER、spaCy 内置 NER</td>
+<td>开箱即用，支持人名 &#x2F; 地名 &#x2F; 时间等通用实体</td>
+</tr>
+<tr>
+<td>垂直业务场景</td>
+<td>基于通用 NER 微调（如 BERT-NER + 运维领域标注数据）、LLM-NER（GPT-4 &#x2F; 通义千问）</td>
+<td>适配业务实体（如 IP、进程 ID、故障类型）</td>
+</tr>
+<tr>
+<td>轻量快速场景</td>
+<td>TextCNN-NER、TinyBERT-NER</td>
+<td>速度快、显存占用低，适合在线实时解析</td>
+</tr>
+</tbody></table>
+<h4 id="NER-模型使用注意事项"><a href="#NER-模型使用注意事项" class="headerlink" title="NER 模型使用注意事项"></a>NER 模型使用注意事项</h4><ul>
+<li>垂直场景必须微调：通用 NER 无法识别业务实体（如 IP、进程 ID），需用 500~1000 条标注数据微调，精度可达 90%+；</li>
+<li>处理分词歧义：中文 NER 需注意分词后的子词拼接（如 “192.168.1.100” 可能被切分为 “192”“##.168” 等，需替换 “##” 拼接）；</li>
+<li>轻量化优化：在线 Agent 场景用 TinyBERT-NER（推理耗时 &lt; 100ms），避免用大模型导致接口超时；</li>
+<li>容错处理：NER 提取失败时（如未识别出 IP），Agent 需触发 “追问用户” 逻辑（如 “请补充服务器 IP 地址”）。</li>
+</ul>
+<h2 id="3-项目"><a href="#3-项目" class="headerlink" title="3.项目"></a>3.项目</h2><h3 id="项目一：智慧工地工程文档智能检索系统-RAG"><a href="#项目一：智慧工地工程文档智能检索系统-RAG" class="headerlink" title="项目一：智慧工地工程文档智能检索系统 (RAG)"></a>项目一：智慧工地工程文档智能检索系统 (RAG)</h3><blockquote>
+<p><strong>关键词：</strong> NLP、RAG、向量数据库、数据清洗、多路召回<br><strong>核心定位：</strong> 解决垂直领域非结构化数据的“查询难”问题。</p>
+</blockquote>
+<ul>
+<li><strong>项目背景</strong>：针对工地场景下复杂的施工方案、图纸规范（图文混排、长表格），构建高精度的智能问答知识库。</li>
+<li><strong>核心技术</strong>：LangChain, BGE-M3 (Embedding), Milvus, BM25, Cross-Encoder (ReRank), minerU (PDF解析)。</li>
+<li><strong>主要工作</strong>：<ol>
+<li><strong>高难度 ETL</strong>：设计了 PDF 转 Markdown 流程，专门处理复杂表格和章节层级，保证语义完整。</li>
+<li><strong>混合检索策略</strong>：实现了“向量检索 + 关键词检索”的多路召回，并引入 ReRank 重排序，大幅提升长尾问题准确率。</li>
+<li><strong>可信生成</strong>：通过引用标注和置信度截断，解决了模型幻觉问题，确保工程决策依据的可靠性。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="项目二：智慧工地多模态安全决策-Agent-系统（续）"><a href="#项目二：智慧工地多模态安全决策-Agent-系统（续）" class="headerlink" title="项目二：智慧工地多模态安全决策 Agent 系统（续）"></a>项目二：智慧工地多模态安全决策 Agent 系统（续）</h3><blockquote>
+<p><strong>关键词：</strong> Agent、LangChain、多模态、Text2SQL、Function Calling<br><strong>核心定位：</strong> 解决传统监控“有感知无决策”的痛点，实现自动化业务闭环。</p>
+</blockquote>
+<ul>
+<li><strong>项目背景</strong>：传统视频监控只能报警“有人”，缺乏法规依据和联动处理。本项目构建了一个能自主思考的智能体，串联视觉、数据和法规。</li>
+<li><strong>核心技术</strong>：YOLOv8 (视觉触发), LangChain Agent (ReAct), Text2SQL, RAG, FastAPI。</li>
+<li><strong>主要工作</strong>：<ol>
+<li><strong>多模态工具链</strong>：封装了 YOLO（视觉感知）、Text2SQL（考勤数据查询）、RAG（法规检索）三大工具，通过 ReAct 范式实现自动化的意图识别与任务分发。</li>
+<li><strong>结构化数据分析</strong>：针对考勤预警需求，优化 <strong>Text2SQL</strong> 生成逻辑（采用 Few-Shot Prompting），实现了对复杂时间窗口（如“连续5天未打卡”）的精准查询。</li>
+<li><strong>主动决策闭环</strong>：改变被动查询模式，设计后台巡检任务，主动分析异常数据并结合 RAG 知识库生成包含“违规证据+处置建议”的标准化安全报告。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="项目三：基于-U-Net-视觉语义分割的-AGV-自动循迹纠偏系统"><a href="#项目三：基于-U-Net-视觉语义分割的-AGV-自动循迹纠偏系统" class="headerlink" title="项目三：基于 U-Net 视觉语义分割的 AGV 自动循迹纠偏系统"></a>项目三：基于 U-Net 视觉语义分割的 AGV 自动循迹纠偏系统</h3><blockquote>
+<p><strong>关键词：</strong> 计算机视觉 (CV)、语义分割、卡尔曼滤波、IPM、MQTT、机器人控制<br><strong>核心定位：</strong> 软硬结合的落地项目，体现算法优化、数学建模与工程部署能力。</p>
+</blockquote>
+<ul>
+<li><strong>项目背景</strong>：为解决 AGV 在复杂地面环境下的循迹难题，替代昂贵的激光雷达方案，开发基于单目视觉的高精度纠偏系统。</li>
+<li><strong>核心技术</strong>：U-Net (MobileNetV3), Dice Loss, OpenCV, IPM (逆透视变换), Kalman Filter, MQTT。</li>
+<li><strong>主要工作</strong>：<ol>
+<li><strong>轻量化分割模型</strong>：针对嵌入式端算力限制，构建 <strong>MobileNetV3-UNet</strong>，并使用 <strong>Dice Loss</strong> 解决细长黄线样本不平衡问题，实现高精度分割。</li>
+<li><strong>几何重建与滤波</strong>：通过 <strong>IPM 逆透视变换</strong> 将图像重建为鸟瞰图，利用<strong>骨架提取</strong>与<strong>曲线拟合</strong>获取中心线；引入 <strong>卡尔曼滤波 (Kalman Filter)</strong> 对时序数据进行平滑处理，有效消除了单帧检测抖动。</li>
+<li><strong>闭环工程落地</strong>：设计 <strong>MQTT</strong> 发布&#x2F;订阅架构实现视觉与底盘解耦，将计算出的横向与角度偏差以低延迟实时下发，实现 ±2cm 精度内的稳定纠偏。</li>
+</ol>
+</li>
+</ul>
+<p>拥有积极的技术追求和落地能力，在数据标注中，进行重复的工作效率太低下，本人结合网上的先进技术quen3-vl进行大模型理解，然后自动标注，节约了大量的成本，效率提高了 90%。</p>
+<p><strong>1.综合成果版</strong></p>
+<p>此版本全面均衡，依次阐述了痛点、解决方案、技术细节与量化成果，逻辑清晰，适合用于工作总结或项目报告。</p>
+<blockquote>
+<p>在计算机视觉项目的落地过程中，数据标注环节长期存在着成本高昂、效率低下的瓶颈。传统的重复性人工标注不仅消耗大量资源，更拖慢了整体研发进度。为突破这一限制，我积极跟进多模态大模型的前沿技术，自主探索并成功落地了一套基于 <strong>Qwen3-VL 大模型的智能数据自动标注方案</strong>。</p>
+<p>该方案通过构建一个集成了 <strong>2D&#x2F;3D 目标检测</strong> 能力的 Streamlit 应用平台，利用大模型强大的视觉理解能力，将原始图像自动转换为高质量的标注数据。实践表明，此方案将标注效率提升了 <strong>90% 以上</strong>，显著降低了人力与时间成本，为团队的技术迭代注入了强大动能，充分体现了技术创新驱动效率变革的核心理念。</p>
+</blockquote>
+<p><strong>2. 技术极客版</strong></p>
+<p>此版本侧重技术实现，通过使用“自动化标注流水线”、“精准的2D&#x2F;3D空间标注”等专业术语，凸显了技术深度与方案的先进性。</p>
+<blockquote>
+<p>针对数据标注这一技术落地的关键痛点，我主导了一项技术革新：基于 <strong>Qwen3-VL 大模型</strong> 构建了一套高效的自动化标注流水线。通过深入研究模型的视觉-语言理解能力，我开发的应用平台能够智能解析图像内容，并生成精准的 <strong>2D 边界框</strong> 乃至复杂的 <strong>3D 空间标注</strong>（包括位置与姿态估计）。</p>
+<p>这一实践将团队从繁重、重复的标注工作中彻底解放出来，效率提升超 <strong>90%</strong>。这不仅是对“技术驱动效率”这一理念的成功验证，也为我后续探索更复杂的视觉任务（如三维场景理解）奠定了坚实的数据基础。</p>
+</blockquote>
+<p><strong>3. 精炼要点版</strong></p>
+<p>此版本高度凝练，使用“卡脖子环节”、“革命性突破”等有力词汇，冲击力强，适合用于简历或个人简介等空间有限的场景。</p>
+<blockquote>
+<p>为攻克数据标注这一“卡脖子”环节，我成功将前沿的 <strong>Qwen3-VL 多模态大模型</strong> 技术应用于自动化标注实践。通过自研的交互式平台，实现了对图像内容的智能理解与 <strong>2D&#x2F;3D 标注信息</strong> 的自动生成，将标注效率革命性提升了 <strong>90%</strong>，极大加速了视觉项目的研发与落地周期。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io">WT</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/">https://wutaoblog.github.io/2026/01/11/项目经验/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wutaoblog.github.io" target="_blank">WT's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E7%BB%8F%E9%AA%8C/">经验</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/01/11/%E8%A7%86%E8%A7%89%E7%AE%97%E6%B3%95/" title="视觉算法"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">视觉算法</div></div><div class="info-2"><div class="info-item-1">视觉算法1. CV子类CV 包含了图像分类、物体检测、图像分割、人脸识别、OCR（文字识别）、三维重建等众多子方向。 一、图像分类图像分类是 CV 最基础的任务，目标是给图像分配唯一的类别标签（如 “猫”“狗”“汽车”）。    类型 经典算法 &#x2F; 模型 核心特点 &amp; 适用场景    传统算法 1. HOG+SVM2. SIFT+BoW3. KNN &#x2F; 朴素贝叶斯 1. HOG+SVM：早期行人 &#x2F; 车辆分类；2. SIFT+BoW：基于特征词袋的通用分类；3. 简单场景，精度低   深度学习 1. LeNet-5（1998）2. AlexNet（2012）3. VGG-16&#x2F;19（2014）4. GoogLeNet（Inception）5. ResNet（2015）6. MobileNet（2017）7. ViT（2020） 1. LeNet：CNN 开山之作（手写数字识别）；2. AlexNet：ImageNet 夺冠，开启深度学习 CV 时代；3. VGG：规整卷积核设计，易迁移；4. GoogLeNet：多尺度特征融合；5....</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" title="大模型开发学习路线"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">大模型开发学习路线</div></div><div class="info-2"><div class="info-item-1">大模型开发学习路线一、岗位能力地图（你需要会到什么程度）  编程与工程 Python&#x2F;TypeScript，异步与并发，API 设计，单元&#x2F;集成测试，Docker，基础云原生（K8s&#x2F;Helm）。   LLM 基础与调用 token&#x2F;上下文&#x2F;温度&#x2F;采样，系统提示与模式约束（JSON schema）、函数&#x2F;工具调用，多模型路由与回退。   RAG 与检索 数据清洗与切块（chunk）、embedding 选型，混合检索（BM25+向量）、重排（rerank）、重复消解，召回评测。   微调与蒸馏 SFT&#x2F;LoRA&#x2F;QLoRA、指令数据构造、对齐（RLAIF&#x2F;RLHF 基本概念）、量化（INT8&#x2F;4）与部署兼容性。   评测与治理 黄金集构建、离线评测（检索&#x2F;回答&#x2F;安全）、线上反馈闭环、A&#x2F;B、可观测（日志&#x2F;追踪）、版本化与回滚。   推理与部署 vLLM&#x2F;TGI&#x2F;Ollama，连续批处理、KV cache、流式、超...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/11/%E5%89%8D%E7%AB%AF/" title="前端起步"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">前端起步</div></div><div class="info-2"><div class="info-item-1">前端启动前端项目的步骤： 首先进入前端目录   cd rag-project01-framework&#x2F;frontend  安装依赖（如果还没有安装的话）   npm install  启动开发服务器  npm run dev 一、 项目的逻辑解析1. 项目的“骨架” - 文件结构一个前端项目就像一栋建筑，文件和文件夹就是它的结构。  package.json：项目清单和“身份证”。它记录了项目叫什么名字、版本号多少、依赖了哪些第三方库（如 vue, element-plus, echarts），以及定义了一些快捷命令（如 npm run dev）。  vite.config.ts：项目的“构建配置”。Vite 是我们的构建工具，这个文件告诉 Vite 如何打包我们的代码，比如我们在这里配置了 Element Plus 的自动导入插件。  1src  目录： 项目的“核心代码区” ，我们绝大部分工作都在这里。  main.ts：项目的“入口”。程序从这里开始运行。它的主要工作是创建 Vue 应用实例，并把它“挂载”到 index.html 的一个 DOM 节点上（通常是 ...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E5%A5%BD%E5%A5%BD%E9%94%BB%E7%82%BC/" title="好好锻炼"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">好好锻炼</div></div><div class="info-2"><div class="info-item-1">好好锻炼一、力量训练：每周 3 次，每次 30-40 分钟（高效增肌 &#x2F; 塑形，提升代谢） 核心动作组合（全身覆盖，兼顾大肌群）： 下肢：深蹲（20 次 &#x2F; 组）、箭步蹲（左右各 10 次 &#x2F; 组）、臀桥（25 次 &#x2F; 组） 上肢：俯卧撑（跪姿 &#x2F; 标准，15 次 &#x2F; 组）、平板支撑（40 秒 &#x2F; 组）、俯身划船（可用矿泉水瓶当哑铃，12 次 &#x2F; 组） 核心：卷腹（20 次 &#x2F; 组）、俄罗斯转体（左右各 15 次 &#x2F; 组）安排：每个动作 3 组，组间休息 30 秒，全程 30 分钟搞定。   小器械加持（提升强度，可选）： 哑铃（1-3kg，女生）&#x2F;5-8kg（男生）：哑铃弯举、肩上推、侧平举（练肩背手臂） 弹力带：侧步走（练臀）、划船（练背）、手臂屈伸（练肱三头肌）优势：小器械易收纳，适合小户型，训练针对性更强。    二、有氧训练：每周 3 次，每次 20-30 分钟（燃脂 + 提升心肺）1. 高效燃脂型（适合时间紧张） HIIT（高强度间歇训练）： 动作：开合跳、高...</div></div></div></a><a class="pagination-related" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">AI agent 开发知识总结</div></div><div class="info-2"><div class="info-item-1">AI agent 开发知识总结什么是agent？ Agent（智能体 &#x2F; 自主代理）在 LLM 驱动的语境下，Agent 指以大规模语言模型为核心控制器（brain），配合记忆（memory）、工具调用（tool use）、规划（planning）与行动（action）模块，形成能够感知环境、制定计划并调用外部 API、函数或机器人执行多步任务，最终完成复杂目标的自治软件实体。它通常遵循观察（observe）→ 思考（reason）→ 行动（act）的循环，支持多轮对话、状态更新和任务拆解。一句话解释就是：给 AI 装上记忆、手脚和工具，让它像人一样自己思考、查资料、做任务，直到把事情办完。 本质上，所有的 Agent 设计模式都是将人类的思维、管理模式以结构化prompt的方式告诉大模型来进行规划，并调用工具执行，且不断迭代的方法,从这个角度来说，Agent设计模式很像传统意义上的程序开发范式，但是泛化和场景通用性远大于传统的程序开发范式。在Agent设计模式中，Prompt可以类比为Python这类高级编程语言，大模型可以类比于程序语言编译&amp;解释器。 任务规...</div></div></div></a><a class="pagination-related" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">Typora入门</div></div><div class="info-2"><div class="info-item-1">Typora入门 文本格式设置： 加粗：在要加粗的文本前后各输入两个星号 “**”，或选中文字后按快捷键 Ctrl+B。 斜体：在要斜体的文本前后各输入一个星号 “*”，快捷键为 Ctrl+I。 粗斜体：在要设置的文本前后各输入三个星号 “***”。 高亮：在要高亮的文本前后各输入两个等号 “&#x3D;&#x3D;”，需在偏好设置的 Markdown 扩展语法内启用。 删除线：在要添加删除线的文本前后各输入两个波浪号 “~~”，快捷键为 Alt+Shift+5。 下划线：选中文字后按快捷键 Ctrl+U，或使用 HTML 标签文本。   标题设置： 输入 “#” 加空格，可创建一级标题，快捷键为 Ctrl+1。 输入 “##” 加空格，可创建二级标题，快捷键为 Ctrl+2，以此类推，最多支持六级标题。   列表创建： 无序列表：使用 “*”“-” 或 “+” 加空格都可以创建，快捷键为 Ctrl+Shift+L。 有序列表：使用 “1.”“2.”“3.” 加空格创建，快捷键为 Ctrl+Shift+O。 任务列表：语法为 “- ()”，减号后、括号内和括号后各有一个空格，括号...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%B4%A6%E5%8F%B7%E4%BF%A1%E6%81%AF/" title="账号密码"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">账号密码</div></div><div class="info-2"><div class="info-item-1">一些账号  ak sk </div></div></div></a><a class="pagination-related" href="/2026/01/11/RAG/" title="RAG 入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">RAG 入门</div></div><div class="info-2"><div class="info-item-1">RAG什么是RAG? RAG（Retrieval-Augmented Generation，检索增强生成）一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而显著降低幻觉、提升时效性与可溯源性。其典型流程：Indexing → Retrieval → Augmentation → Generation。一句话解释就是：先用“搜索引擎”找到相关文档，再让“作文高手”参考这些资料写答案，既新鲜又靠谱。 实现方式 1.1平台实现 fastgpt、coze、dify等 1.2代码实现 代码有哪些技术栈？  具体技术细节有哪些？  文档提取  1.1txt问本提取 1.2pdf提取工具  1.3表格提前工具 使用Llama Hub中的Database Reader工具连接MySQL数据库，并将数据库表数据加载到Llama Index的Documents...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">WT</div><div class="author-info-description">记录学习路上的点点滴滴，记得好好生活哦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/taogehengq"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Project-Experience"><span class="toc-number">1.</span> <span class="toc-text">Project Experience</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-rag%E7%9F%A5%E8%AF%86%E5%BA%93%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1 rag知识库项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%B7%A5%E7%A8%8B%E5%8C%96%E8%90%BD%E5%9C%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 工程化落地</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-1%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%B1%82%EF%BC%9A%E6%96%87%E6%A1%A3%E8%8E%B7%E5%8F%96-%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E5%8F%AF%E9%9D%A0-%E7%89%88%E6%9C%AC%E5%8F%AF%E8%BF%BD%E6%BA%AF%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-2%EF%BC%9A%E6%96%87%E6%A1%A3%E7%90%86%E8%A7%A3%E5%B1%82%EF%BC%9A%E8%A7%A3%E6%9E%90%E2%86%92%E7%BB%93%E6%9E%84%E5%8C%96%E2%86%92%E5%88%87%E5%88%86%E2%86%92%E6%B8%85%E6%B4%97%E5%AF%B9%E9%BD%90%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E6%9C%BA%E5%99%A8%E8%83%BD%E8%AF%BB%E6%87%82%E6%96%87%E6%A1%A3%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">阶段 2：文档理解层：解析→结构化→切分→清洗对齐（解决 “机器能读懂文档”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-3%EF%BC%9A%E7%B4%A2%E5%BC%95%E6%9E%84%E5%BB%BA%E5%B1%82%EF%BC%9A%E5%90%91%E9%87%8F%E5%8C%96%E2%86%92%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95%E2%86%92%E5%85%83%E6%95%B0%E6%8D%AE%E7%B4%A2%E5%BC%95%E2%86%92%E5%A2%9E%E9%87%8F-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E9%AB%98%E6%95%88%E6%A3%80%E7%B4%A2-%E5%8F%AF%E7%BB%B4%E6%8A%A4%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">阶段 3：索引构建层：向量化→稀疏索引→元数据索引→增量 &#x2F; 版本控制（解决 “高效检索 + 可维护”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-4%EF%BC%9A%E6%A3%80%E7%B4%A2%E5%B1%82%EF%BC%9AQuery-%E7%90%86%E8%A7%A3%E2%86%92%E5%A4%9A%E8%B7%AF%E5%8F%AC%E5%9B%9E%E2%86%92ReRank%E2%86%92Context-%E6%9E%84%E5%BB%BA%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E5%8F%AC%E5%9B%9E%E5%87%86-%E6%8E%92%E5%BA%8F%E4%BC%98%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">阶段 4：检索层：Query 理解→多路召回→ReRank→Context 构建（解决 “召回准 + 排序优”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-5%EF%BC%9A%E7%94%9F%E6%88%90%E5%B1%82%EF%BC%9APrompt-%E5%AF%B9%E9%BD%90%E2%86%92Grounding-Citation%E2%86%92%E8%BE%93%E5%87%BA%E6%8E%A7%E5%88%B6%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E7%AD%94%E6%A1%88%E5%87%86-%E6%97%A0%E5%B9%BB%E8%A7%89-%E6%A0%BC%E5%BC%8F%E8%A7%84%E8%8C%83%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.5.</span> <span class="toc-text">阶段 5：生成层：Prompt 对齐→Grounding&#x2F;Citation→输出控制（解决 “答案准 + 无幻觉 + 格式规范”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-6%EF%BC%9A%E8%AF%84%E4%BC%B0-%E4%BC%98%E5%8C%96%E5%B1%82%EF%BC%9A%E6%A3%80%E7%B4%A2%E8%AF%84%E4%BC%B0%E2%86%92%E7%94%9F%E6%88%90%E8%AF%84%E4%BC%B0%E2%86%92%E5%9C%A8%E7%BA%BF%E5%8F%8D%E9%A6%88-A-B%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E6%8C%81%E7%BB%AD%E8%BF%AD%E4%BB%A3%EF%BC%8C%E6%8F%90%E5%8D%87%E6%95%88%E6%9E%9C%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.6.</span> <span class="toc-text">阶段 6：评估 &amp; 优化层：检索评估→生成评估→在线反馈 &amp; A&#x2F;B（解决 “持续迭代，提升效果”）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5-7%EF%BC%9A%E5%B7%A5%E7%A8%8B%E6%94%AF%E6%92%91%EF%BC%9A%E7%BC%93%E5%AD%98-%E5%B9%B6%E5%8F%91-%E9%99%8D%E7%BA%A7%E2%86%92%E7%9B%91%E6%8E%A7-%E6%88%90%E6%9C%AC-%E5%AE%89%E5%85%A8%EF%BC%88%E8%A7%A3%E5%86%B3-%E2%80%9C%E7%B3%BB%E7%BB%9F%E7%A8%B3-%E6%88%90%E6%9C%AC%E5%8F%AF%E6%8E%A7-%E6%97%A0%E9%A3%8E%E9%99%A9%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.1.7.</span> <span class="toc-text">阶段 7：工程支撑：缓存 &#x2F; 并发 &#x2F; 降级→监控 &#x2F; 成本 &#x2F; 安全（解决 “系统稳 + 成本可控 + 无风险”）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E5%85%B7%E9%AB%94%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2具體操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E5%A4%84%E7%90%86%E6%96%87%E6%A1%A3"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">1.1 处理文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E5%86%99%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">1.2 写提示词</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-%E6%90%AD%E5%BB%BA%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">1.3 搭建工作流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-%E6%8E%A5%E5%85%A5mcp"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">1.4 接入mcp</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E8%BF%9B%E9%98%B6"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-Re-Ranking%E7%AE%97%E6%B3%95%E4%BC%98%E5%8C%96"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">1.4 Re-Ranking算法优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-%E5%90%91%E9%87%8F%E6%95%B0%E6%8D%AE%E5%BA%93muilvs%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">1.5 向量数据库muilvs使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-6-%E6%A3%80%E7%B4%A2%E4%BC%98%E5%8C%96-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">1.6 检索优化-混合检索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-7-%E6%9F%A5%E8%AF%A2%E7%90%86%E8%A7%A3-%E6%84%8F%E5%9B%BE%E8%AF%86%E5%88%AB"><span class="toc-number">1.1.3.4.</span> <span class="toc-text">1.7 查询理解-意图识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-8-%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90"><span class="toc-number">1.1.3.5.</span> <span class="toc-text">1.8 文本生成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-9-%E5%8F%AF%E8%A7%80%E6%B8%AC%E6%80%A7"><span class="toc-number">1.1.3.6.</span> <span class="toc-text">1.9 可觀測性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4总结</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-10-%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E9%9A%BE%E7%82%B9"><span class="toc-number">1.1.4.1.</span> <span class="toc-text">1.10 项目技术难点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FQA"><span class="toc-number">1.2.</span> <span class="toc-text">FQA</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Agent-RAG-Agenic%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">2. Agent RAG Agenic项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-%E6%9E%84%E5%BB%BA%E6%88%90%E5%8A%9F%E7%9A%84%E6%A0%B8%E5%BF%83%E5%85%B3%E9%94%AE%E7%82%B9"><span class="toc-number">2.1.</span> <span class="toc-text">Agent 构建成功的核心关键点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-%E6%9E%84%E5%BB%BA%E6%89%80%E9%9C%80%E7%9A%84%E6%8A%80%E6%9C%AF-%E7%AE%97%E6%B3%95-%E6%A8%A1%E5%9E%8B-%E5%B7%A5%E5%85%B7-%E6%A1%86%E6%9E%B6%EF%BC%88%E5%88%86%E7%B1%BB%E6%A2%B3%E7%90%86%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">Agent 构建所需的技术 &#x2F; 算法 &#x2F; 模型 &#x2F; 工具 &#x2F; 框架（分类梳理）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9E%8B%E5%B1%82%EF%BC%88%E6%99%BA%E8%83%BD%E5%86%B3%E7%AD%96%E4%B8%8E%E7%94%9F%E6%88%90%EF%BC%89"><span class="toc-number">2.2.1.</span> <span class="toc-text">核心模型层（智能决策与生成）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%B1%82%EF%BC%88%E5%86%B3%E7%AD%96%E4%B8%8E%E4%BC%98%E5%8C%96%EF%BC%89"><span class="toc-number">2.2.2.</span> <span class="toc-text">算法层（决策与优化）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E5%B1%82%EF%BC%88%E6%89%A7%E8%A1%8C%E8%83%BD%E5%8A%9B%E6%89%A9%E5%B1%95%EF%BC%89"><span class="toc-number">2.2.3.</span> <span class="toc-text">工具层（执行能力扩展）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E5%B1%82%EF%BC%88%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%B0%81%E8%A3%85%EF%BC%89"><span class="toc-number">2.2.4.</span> <span class="toc-text">框架层（工程化封装）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%EF%BC%9A%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82-%E2%86%92-%E2%80%9C%E6%88%91%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88192-168-1-100%EF%BC%89Python-%E8%BF%9B%E7%A8%8B-12345-%E5%86%85%E5%AD%98%E9%A3%99%E5%8D%87%EF%BC%8C%E5%B8%AE%E6%88%91%E6%8E%92%E6%9F%A5%E5%8E%9F%E5%9B%A0%E5%B9%B6%E4%BF%AE%E5%A4%8D%E2%80%9D"><span class="toc-number">2.3.</span> <span class="toc-text">场景：用户需求 → “我的服务器（192.168.1.100）Python 进程 12345 内存飙升，帮我排查原因并修复”</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-1%EF%BC%9AAgent-%E5%88%9D%E5%A7%8B%E5%8C%96-%E4%BB%BB%E5%8A%A1%E7%90%86%E8%A7%A3%EF%BC%88LangChain-GPT-4%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">步骤 1：Agent 初始化 &amp; 任务理解（LangChain + GPT-4）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2%EF%BC%9A%E8%A7%84%E5%88%92%EF%BC%88Plan%EF%BC%89%E6%8B%86%E8%A7%A3%EF%BC%88LangChain-ReAct-GPT-4%EF%BC%89"><span class="toc-number">2.3.2.</span> <span class="toc-text">步骤 2：规划（Plan）拆解（LangChain ReAct + GPT-4）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3%EF%BC%9A%E6%89%A7%E8%A1%8C-Plan%EF%BC%88LangChain-%E5%A4%9A%E5%B7%A5%E5%85%B7-%E7%8A%B6%E6%80%81%E6%9C%BA%EF%BC%89"><span class="toc-number">2.3.3.</span> <span class="toc-text">步骤 3：执行 Plan（LangChain + 多工具 + 状态机）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-4%EF%BC%9A%E5%8F%8D%E6%80%9D%E9%97%AD%E7%8E%AF%EF%BC%88%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%A1%E9%AA%8C%E9%80%BB%E8%BE%91-GPT-4%EF%BC%89"><span class="toc-number">2.3.4.</span> <span class="toc-text">步骤 4：反思闭环（自定义校验逻辑 + GPT-4）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-5%EF%BC%9A%E7%BB%9F%E4%B8%80%E7%94%9F%E6%88%90%E5%9B%9E%E5%A4%8D%EF%BC%88GPT-4-LangChain-Prompt%EF%BC%89"><span class="toc-number">2.3.5.</span> <span class="toc-text">步骤 5：统一生成回复（GPT-4 + LangChain Prompt）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-6%EF%BC%9A%E8%AE%B0%E5%BF%86%E6%9B%B4%E6%96%B0%EF%BC%88Milvus-Redis%EF%BC%89"><span class="toc-number">2.3.6.</span> <span class="toc-text">步骤 6：记忆更新（Milvus + Redis）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E8%A1%93%E9%97%9C%E9%8D%B5%E9%BB%9E%E7%90%86%E8%A7%A3"><span class="toc-number">2.4.</span> <span class="toc-text">技術關鍵點理解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%84%E7%B1%BB%E7%8A%B6%E6%80%81%E6%9C%BA-Workflow-%E6%A1%86%E6%9E%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E4%B8%8E%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.1.</span> <span class="toc-text">各类状态机 &#x2F; Workflow 框架的关系与区别</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%881%EF%BC%89DAG-vs-%E7%8A%B6%E6%80%81%E6%9C%BA%EF%BC%88FSM-HSM%EF%BC%89"><span class="toc-number">2.4.1.1.</span> <span class="toc-text">（1）DAG vs 状态机（FSM&#x2F;HSM）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%EF%BC%882%EF%BC%89%E5%90%84%E7%B1%BB%E6%A1%86%E6%9E%B6%E7%9A%84%E6%A0%B8%E5%BF%83%E5%B7%AE%E5%BC%82"><span class="toc-number">2.4.1.2.</span> <span class="toc-text">（2）各类框架的核心差异</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA-Workflow-%E6%A1%86%E6%9E%B6%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-number">2.4.1.3.</span> <span class="toc-text">状态机 &#x2F; Workflow 框架选型建议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NER-%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BD%9C%E7%94%A8%EF%BC%88Agent-%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-number">2.4.2.</span> <span class="toc-text">NER 模型的核心作用（Agent 场景）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#NER-%E6%A8%A1%E5%9E%8B%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.4.2.1.</span> <span class="toc-text">NER 模型使用注意事项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%A1%B9%E7%9B%AE"><span class="toc-number">2.5.</span> <span class="toc-text">3.项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%80%EF%BC%9A%E6%99%BA%E6%85%A7%E5%B7%A5%E5%9C%B0%E5%B7%A5%E7%A8%8B%E6%96%87%E6%A1%A3%E6%99%BA%E8%83%BD%E6%A3%80%E7%B4%A2%E7%B3%BB%E7%BB%9F-RAG"><span class="toc-number">2.5.1.</span> <span class="toc-text">项目一：智慧工地工程文档智能检索系统 (RAG)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BA%8C%EF%BC%9A%E6%99%BA%E6%85%A7%E5%B7%A5%E5%9C%B0%E5%A4%9A%E6%A8%A1%E6%80%81%E5%AE%89%E5%85%A8%E5%86%B3%E7%AD%96-Agent-%E7%B3%BB%E7%BB%9F%EF%BC%88%E7%BB%AD%EF%BC%89"><span class="toc-number">2.5.2.</span> <span class="toc-text">项目二：智慧工地多模态安全决策 Agent 系统（续）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%89%EF%BC%9A%E5%9F%BA%E4%BA%8E-U-Net-%E8%A7%86%E8%A7%89%E8%AF%AD%E4%B9%89%E5%88%86%E5%89%B2%E7%9A%84-AGV-%E8%87%AA%E5%8A%A8%E5%BE%AA%E8%BF%B9%E7%BA%A0%E5%81%8F%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.5.3.</span> <span class="toc-text">项目三：基于 U-Net 视觉语义分割的 AGV 自动循迹纠偏系统</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 全面技能"/></a><div class="content"><a class="title" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能">Agent 全面技能</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 完整技术栈"/></a><div class="content"><a class="title" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈">RAG 完整技术栈</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG/" title="RAG 入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 入门"/></a><div class="content"><a class="title" href="/2026/01/11/RAG/" title="RAG 入门">RAG 入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI agent 开发知识总结"/></a><div class="content"><a class="title" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结">AI agent 开发知识总结</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora入门"/></a><div class="content"><a class="title" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门">Typora入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By WT</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>RAG 入门 | WT's Blog</title><meta name="author" content="WT"><meta name="copyright" content="WT"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RAG什么是RAG? RAG（Retrieval-Augmented Generation，检索增强生成）一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAG 入门">
+<meta property="og:url" content="https://wutaoblog.github.io/2026/01/11/RAG/index.html">
+<meta property="og:site_name" content="WT&#39;s Blog">
+<meta property="og:description" content="RAG什么是RAG? RAG（Retrieval-Augmented Generation，检索增强生成）一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png">
+<meta property="article:published_time" content="2026-01-11T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-11T07:13:49.547Z">
+<meta property="article:author" content="WT">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="rag">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "RAG 入门",
+  "url": "https://wutaoblog.github.io/2026/01/11/RAG/",
+  "image": "https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png",
+  "datePublished": "2026-01-11T02:00:00.000Z",
+  "dateModified": "2026-01-11T07:13:49.547Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "WT",
+      "url": "https://wutaoblog.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wutaoblog.github.io/2026/01/11/RAG/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RAG 入门',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(https://s2.loli.net/2024/01/08/2NLQjw1oVCxdg4v.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">WT's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">RAG 入门</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RAG 入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-11T07:13:49.547Z" title="更新于 2026-01-11 15:13:49">2026-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="RAG"><a href="#RAG" class="headerlink" title="RAG"></a>RAG</h2><p>什么是RAG?</p>
+<p>RAG（Retrieval-Augmented Generation，检索增强生成）<br>一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而显著降低幻觉、提升时效性与可溯源性。其典型流程：Indexing → Retrieval → Augmentation → Generation。<strong>一句话解释就是：先用“搜索引擎”找到相关文档，再让“作文高手”参考这些资料写答案，既新鲜又靠谱。</strong></p>
+<p>实现方式</p>
+<p>1.1平台实现</p>
+<p>fastgpt、coze、dify等</p>
+<p>1.2代码实现</p>
+<p>代码有哪些技术栈？</p>
+<p><img src="C:\Users\vip\AppData\Roaming\Typora\typora-user-images\image-20250829165800449.png"></p>
+<p>具体技术细节有哪些？</p>
+<ol>
+<li>文档提取</li>
+</ol>
+<p>1.1txt问本提取</p>
+<p>1.2pdf提取工具</p>
+<p><img src="C:\Users\vip\AppData\Roaming\Typora\typora-user-images\image-20250829163636230.png"></p>
+<p>1.3表格提前工具</p>
+<p>使用Llama Hub中的Database Reader工具连接MySQL数据库，并将数据库表数据加载到Llama Index的Documents中，实现RAG系统对数据库数据的支持。</p>
+<p>1.4pdf中的表格</p>
+<p>通过Unstructured推断表格结构</p>
+<p>通过调用LlamaParser来解析表格</p>
+<p>概览</p>
+<ul>
+<li>建议走“螺旋式”路径，而不是完全线性的“原理→框架→二开→自研”。先跑通业务、立评测，再围绕问题点补原理、做定制，最后在关键环节做组件级自研。</li>
+<li>学习目标不是会调API，而是能“量化提升质量、解释问题、降本提效”。每个阶段都要有可复现的指标与产出。</li>
+</ul>
+<p>一、总体路线（6–8周，可压缩&#x2F;拉伸）<br>阶段0｜准备（0.5周）</p>
+<ul>
+<li>预备知识：Python、基础IR（TF-IDF&#x2F;BM25）、向量与余弦相似度、基本Linux与容器。</li>
+<li>数据：选一个你熟悉且可开源展示的小型领域集（公司规章&#x2F;开源项目文档&#x2F;金融研报&#x2F;中文法规），准备10–30个“黄金问答”作为评测集。</li>
+</ul>
+<p>阶段1｜先跑通（1–3天）</p>
+<ul>
+<li>用一个框架快速搭端到端 RAG：LlamaIndex&#x2F;Haystack&#x2F;RAGFlow&#x2F;LangChain 任选其一。</li>
+<li>最小可行：本地文档→切分→嵌入→向量库→检索→重排→回答→引用。</li>
+<li>交付物：可用Demo + 基线指标（例如：命中率&#x2F;引用正确率&#x2F;平均延迟&#x2F;每次调用成本）。</li>
+</ul>
+<p>阶段2｜评测先行（2–3天）</p>
+<ul>
+<li>建黄金集（问题、标准答案、证据文档），用 Ragas&#x2F;DeepEval&#x2F;TruLens 做离线评测。</li>
+<li>建立迭代仪表：召回@k、nDCG、答案相关性、引用正确率、延迟、成本。</li>
+<li>交付物：基线评测报告 + 可复现实验脚本。</li>
+</ul>
+<p>阶段3｜原理补齐 + 针对性优化（1–2周）</p>
+<ul>
+<li>学什么原理？只学和你当前瓶颈相关的：<ul>
+<li>召回不稳：混合检索（BM25+向量）、多路召回（multi-query&#x2F;RAG-Fusion）、HyDE。</li>
+<li>回答偏题&#x2F;幻觉：重排（bge-reranker&#x2F;ColBERT）、强制引用、提示结构化。</li>
+<li>找不到信息：切分策略（标题感知、层级切分、滑窗&#x2F;重组）、元数据过滤。</li>
+<li>延迟高&#x2F;成本高：ANN索引参数（HNSW&#x2F;IVF）、缓存、批量化、流式生成。</li>
+</ul>
+</li>
+<li>轻度“二次开发”：替换组件、改切分器、加多路检索与重排。</li>
+<li>交付物：对比报告（例如召回@20 从0.62→0.78、引用正确率从0.70→0.86、P95延迟-25%），并配误差分析。</li>
+</ul>
+<p>阶段4｜组件级自研（1–2周，选一个深入）</p>
+<ul>
+<li>选一个点做“能讲得清、拿得出数据”的深挖：<ul>
+<li>自研切分&#x2F;重组：段落+标题+表格&#x2F;代码结构化，支持章节回填。</li>
+<li>实现一个“最小RAG”纯代码版（约100–200行）：Sentence-Transformers + FAISS + 自写BM25 + bge-reranker。</li>
+<li>检索策略研究：RAG-Fusion&#x2F;回溯重排&#x2F;多跳检索；或自训练一个小型Reranker。</li>
+</ul>
+</li>
+<li>交付物：技术笔记&#x2F;博客 + 代码仓库 + 指标提升曲线。</li>
+</ul>
+<p>阶段5｜工程化意识（1周）</p>
+<ul>
+<li>增量索引&#x2F;版本管理、缓存（结果&#x2F;嵌入&#x2F;提示）、日志与观测、A&#x2F;B测试。</li>
+<li>交付物：一页架构图 + 运维与成本优化清单。</li>
+</ul>
+<p>二、学习顺序该如何权衡？</p>
+<ul>
+<li>不建议：先把所有原理学完再动手。你会在细节里迷路，且难以形成“问题→原理→验证”的闭环。</li>
+<li>推荐比例：做中学（60%）+ 原理补齐（30%）+ 从零实现&#x2F;深挖（10%）。</li>
+<li>进阶阈值（什么时候从“二次开发”跨到“自研组件”）：<ul>
+<li>你的评测卡在某个瓶颈（比如召回或引用正确率）连续两周难以提升；</li>
+<li>业务提出刚性目标（延迟、成本、合规、权限）现有框架难满足；</li>
+<li>你能明确“自研该组件的收益&gt;两周投入”。</li>
+</ul>
+</li>
+</ul>
+<p>三、能力里程碑（自检清单）</p>
+<ul>
+<li>L1 可用：能用任一框架在你的数据上搭出稳定RAG，含引用与混合检索。</li>
+<li>L2 可评：会构建黄金集、用Ragas&#x2F;DeepEval跑自动评测，会做误差分类与定位。</li>
+<li>L3 可优：能通过切分&#x2F;混合检索&#x2F;重排&#x2F;查询改写把关键指标提升20–30%。</li>
+<li>L4 可讲：能写清楚方法、实验设置与指标，给出可复现实验仓库。</li>
+<li>L5 可造：至少在一个环节实现可替换组件（切分器&#x2F;检索器&#x2F;重排器&#x2F;评测管线）。</li>
+</ul>
+<p>四、推荐技术栈（可替换）</p>
+<ul>
+<li>模型<ul>
+<li>Embedding: bge-m3 或 gte-Qwen2；中文可先用 BAAI&#x2F;bge-small-zh。</li>
+<li>Reranker: bge-reranker-v2-m3 或 Cohere Rerank（云端）。</li>
+<li>LLM: Qwen2.5&#x2F;GLM-4&#x2F;Claude&#x2F; GPT-4o 或本地Qwen2.5-7B-Instruct。</li>
+</ul>
+</li>
+<li>检索与索引<ul>
+<li>向量库：pgvector（轻量）、Qdrant&#x2F;Weaviate&#x2F;Milvus（规模化）。</li>
+<li>关键词：Elasticsearch&#x2F;OpenSearch 的 BM25；做混合检索。</li>
+</ul>
+</li>
+<li>框架与工具<ul>
+<li>LlamaIndex &#x2F; Haystack &#x2F; LangChain &#x2F; RAGFlow(快原型)；</li>
+<li>评测：Ragas&#x2F;DeepEval&#x2F;TruLens；可配 Promptfoo 做对比。</li>
+</ul>
+</li>
+<li>实用技巧<ul>
+<li>切分：标题感知 + 适度重叠（如256–512 tokens，overlap 15–20%）；</li>
+<li>检索：混合检索 + Rerank top-50→top-10；</li>
+<li>查询改写：multi-query 或 RAG-Fusion；</li>
+<li>强化引用：要求模型以“证据片段+页码&#x2F;段落ID”回答。</li>
+</ul>
+</li>
+</ul>
+<p>五、练手项目建议（能进作品集）</p>
+<ul>
+<li>法规&#x2F;公司制度助理：强调有效期与引用正确率；做“过期文档过滤”。</li>
+<li>工程文档助理：对代码&#x2F;表格友好切分；支持多跳问答（先定位API，再找示例）。</li>
+<li>多语检索：中英文混写资料库，验证 bge-m3 跨语种检索效果与Rerank收益。<br>每个项目都要有：数据清单、评测集、指标提升表、误差分析和成本对比。</li>
+</ul>
+<p>六、关键原理清单（按需补齐）</p>
+<ul>
+<li>IR与ANN：BM25&#x2F;TF-IDF、HNSW&#x2F;IVF&#x2F;量化、向量归一化与距离度量。</li>
+<li>检索策略：混合检索、多路召回、HyDE、RAG-Fusion、多跳检索。</li>
+<li>生成与控制：提示结构化、引用强约束、答案去重与合并。</li>
+<li>评测：召回@k、nDCG、MRR、引用正确率、事实一致性；人工校验方法与标注指南。</li>
+<li>工程：增量索引、版本化、缓存、速率限制、成本&#x2F;延迟监控。</li>
+</ul>
+<p>七、常见坑</p>
+<ul>
+<li>不做混合检索，只靠向量，导致召回不稳。</li>
+<li>切分粗糙，忽略标题&#x2F;层级&#x2F;表格&#x2F;代码结构。</li>
+<li>无黄金集与自动评测，只靠主观“感觉还行”。</li>
+<li>只追新模型，不做误差分析与问题定位。</li>
+<li>指标不成体系：离线提升与线上体验不一致。</li>
+</ul>
+<p>八、如果你想要一条“极简开始”的清单</p>
+<ul>
+<li>Day 1–2：用 LlamaIndex + pgvector + bge-m3 跑通，出基线。</li>
+<li>Day 3–4：补黄金集 + Ragas，出第一版评测。</li>
+<li>Week 2：加 BM25 混合检索 + bge-reranker；改切分；写提升报告。</li>
+<li>Week 3：实现最小RAG（纯Python+FAISS）；对比框架效果与延迟&#x2F;成本。</li>
+<li>Week 4：择一深挖点（RAG-Fusion 或结构化切分），写技术文章。</li>
+</ul>
+<p>最后的建议</p>
+<ul>
+<li>你的顺序可以是“先框架跑通→立评测→围绕指标补原理→针对性二开→选择一处自研”。这比“先把所有原理学完再动”更高效。</li>
+<li>如果愿意，告诉我你的背景（工程&#x2F;算法&#x2F;产品）、可投入时间、目标行业与数据规模，我给你定制一份更细的周计划和工具选型。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io">WT</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io/2026/01/11/RAG/">https://wutaoblog.github.io/2026/01/11/RAG/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wutaoblog.github.io" target="_blank">WT's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/rag/">rag</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AI agent 开发知识总结</div></div><div class="info-2"><div class="info-item-1">AI agent 开发知识总结什么是agent？ Agent（智能体 &#x2F; 自主代理）在 LLM 驱动的语境下，Agent 指以大规模语言模型为核心控制器（brain），配合记忆（memory）、工具调用（tool use）、规划（planning）与行动（action）模块，形成能够感知环境、制定计划并调用外部 API、函数或机器人执行多步任务，最终完成复杂目标的自治软件实体。它通常遵循观察（observe）→ 思考（reason）→ 行动（act）的循环，支持多轮对话、状态更新和任务拆解。一句话解释就是：给 AI 装上记忆、手脚和工具，让它像人一样自己思考、查资料、做任务，直到把事情办完。 本质上，所有的 Agent 设计模式都是将人类的思维、管理模式以结构化prompt的方式告诉大模型来进行规划，并调用工具执行，且不断迭代的方法,从这个角度来说，Agent设计模式很像传统意义上的程序开发范式，但是泛化和场景通用性远大于传统的程序开发范式。在Agent设计模式中，Prompt可以类比为Python这类高级编程语言，大模型可以类比于程序语言编译&amp;解释器。 任务规...</div></div></div></a><a class="pagination-related" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">RAG 完整技术栈</div></div><div class="info-2"><div class="info-item-1">RAG 完整技术栈1. 采集 &amp; 预处理内容抓取 网页爬虫 API 同步 数据库 CDC SaaS 连接器  格式归一 PDF&#x2F;Doc → Markdown OCR &amp; 表格还原 PPT 大纲提取  清洗 去噪（页眉页脚、广告） 去重 PII 脱敏  元数据注入 标题&#x2F;时间&#x2F;作者 权限&#x2F;版本号 chunk 来源坐标  2. 深度内容理解层级切分 句子 → 段落 → 章节 语义滑窗 overlap  多粒度摘要 句子级摘要 段落级摘要 文档级摘要  多模态解析 图表 caption 生成 图像 OCR 音频转文本  知识图谱 实体抽取 关系抽取 多跳问答  3. 索引策略混合索引 稠密向量（embedding） 稀疏向量（BM25&#x2F;SPLADE） 倒排关键词  多级索引 文档级粗排 chunk 级精排 HNSW → PQ  结构化字段 时间&#x2F;权限&#x2F;标签 布尔过滤  动态更新 CDC Upsert 软删除 &amp; 版本回滚  4. 查询理解Query 改写 同义词扩展 拼写纠错 Query2Do...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">RAG 完整技术栈</div></div><div class="info-2"><div class="info-item-1">RAG 完整技术栈1. 采集 &amp; 预处理内容抓取 网页爬虫 API 同步 数据库 CDC SaaS 连接器  格式归一 PDF&#x2F;Doc → Markdown OCR &amp; 表格还原 PPT 大纲提取  清洗 去噪（页眉页脚、广告） 去重 PII 脱敏  元数据注入 标题&#x2F;时间&#x2F;作者 权限&#x2F;版本号 chunk 来源坐标  2. 深度内容理解层级切分 句子 → 段落 → 章节 语义滑窗 overlap  多粒度摘要 句子级摘要 段落级摘要 文档级摘要  多模态解析 图表 caption 生成 图像 OCR 音频转文本  知识图谱 实体抽取 关系抽取 多跳问答  3. 索引策略混合索引 稠密向量（embedding） 稀疏向量（BM25&#x2F;SPLADE） 倒排关键词  多级索引 文档级粗排 chunk 级精排 HNSW → PQ  结构化字段 时间&#x2F;权限&#x2F;标签 布尔过滤  动态更新 CDC Upsert 软删除 &amp; 版本回滚  4. 查询理解Query 改写 同义词扩展 拼写纠错 Query2Do...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E4%BB%B7%E5%80%BC%E5%B1%95%E7%A4%BA/" title="价值展示"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">价值展示</div></div><div class="info-2"><div class="info-item-1">价值展示 足够强大-领袖气质。 硬价值—-钱，颜值，身材，地位。价值越高，分数越高。钱可以装，不要寒酸气，颜值需要收拾，肌肉合适。软价值—-内在特质。幽默，领导力，光环效应，有主见。 无意识展示价值。 拉升关系。  吸引7步法 开场白–激发回复欲望，朋友圈，我的状态加感受，延续话题。 交换基本信息–只说半句，一句正经一句逗比。表演型人格 拉近距离–装b，有价值。侧面，让女生主动问。 形象塑造– 升温关系– 可得性– 邀约– 什么是黄毛？ 答案是有颜值有身材有物质条件有审美有学习力有方向感有执行力有原则有格局有边界有攻击性有主体性勇敢情绪稳定 </div></div></div></a><a class="pagination-related" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">AI agent 开发知识总结</div></div><div class="info-2"><div class="info-item-1">AI agent 开发知识总结什么是agent？ Agent（智能体 &#x2F; 自主代理）在 LLM 驱动的语境下，Agent 指以大规模语言模型为核心控制器（brain），配合记忆（memory）、工具调用（tool use）、规划（planning）与行动（action）模块，形成能够感知环境、制定计划并调用外部 API、函数或机器人执行多步任务，最终完成复杂目标的自治软件实体。它通常遵循观察（observe）→ 思考（reason）→ 行动（act）的循环，支持多轮对话、状态更新和任务拆解。一句话解释就是：给 AI 装上记忆、手脚和工具，让它像人一样自己思考、查资料、做任务，直到把事情办完。 本质上，所有的 Agent 设计模式都是将人类的思维、管理模式以结构化prompt的方式告诉大模型来进行规划，并调用工具执行，且不断迭代的方法,从这个角度来说，Agent设计模式很像传统意义上的程序开发范式，但是泛化和场景通用性远大于传统的程序开发范式。在Agent设计模式中，Prompt可以类比为Python这类高级编程语言，大模型可以类比于程序语言编译&amp;解释器。 任务规...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/" title="项目经验"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">项目经验</div></div><div class="info-2"><div class="info-item-1">Project Experience1 rag知识库项目1.1 工程化落地我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大模型進行輸出）。 核心流程：原始文档 → 文档预处理（结构化+清洗）→ 文档切分+增强 → 向量化/索引构建 → 检索（多策略召回）→ 重排（精排）→ 提示工程+生成 → 输出/反馈优化 核心逻辑：用标准化的文档处理保证数据质量 → 用多策略检索保证召回率 → 用重排保证准确率 → 用提示工程 + 幻觉控制保证生成质量 → 用工程化手段保证稳定性。 阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）核心目标：从多渠道获取原始文档，建立「文档版本控制机制」，避免数据丢失或版本混乱，为后续处理提供 “干净、可追溯的数据源”。 阶段 2：文档理解层：解析...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%A7%86%E8%A7%89%E7%AE%97%E6%B3%95/" title="视觉算法"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">视觉算法</div></div><div class="info-2"><div class="info-item-1">视觉算法1. CV子类CV 包含了图像分类、物体检测、图像分割、人脸识别、OCR（文字识别）、三维重建等众多子方向。 一、图像分类图像分类是 CV 最基础的任务，目标是给图像分配唯一的类别标签（如 “猫”“狗”“汽车”）。    类型 经典算法 &#x2F; 模型 核心特点 &amp; 适用场景    传统算法 1. HOG+SVM2. SIFT+BoW3. KNN &#x2F; 朴素贝叶斯 1. HOG+SVM：早期行人 &#x2F; 车辆分类；2. SIFT+BoW：基于特征词袋的通用分类；3. 简单场景，精度低   深度学习 1. LeNet-5（1998）2. AlexNet（2012）3. VGG-16&#x2F;19（2014）4. GoogLeNet（Inception）5. ResNet（2015）6. MobileNet（2017）7. ViT（2020） 1. LeNet：CNN 开山之作（手写数字识别）；2. AlexNet：ImageNet 夺冠，开启深度学习 CV 时代；3. VGG：规整卷积核设计，易迁移；4. GoogLeNet：多尺度特征融合；5....</div></div></div></a><a class="pagination-related" href="/2026/01/11/MY%20mind-%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%B5%81%E9%80%9D%E7%9A%84%E8%AE%B0%E5%BF%86/" title="MY mind-记录时间流逝的记忆"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">MY mind-记录时间流逝的记忆</div></div><div class="info-2"><div class="info-item-1">MY mind-记录时间流逝的记忆记录时间流逝的记忆，你的思想可以被改变但是不能没有痕迹！！！ MY idea如果你有一个好的想法，你可以从0开始的记录下来。  我没有什么爱好，除了健身，看书，学英语。早睡早起，晚上健身，早上看书，周末学习英语。 我想使用AI开个账号。做啥呢？科普、？短视频？短剧？图文？小说？还是agent复现？  MY plan如果你有什么想做的事情，你可以流程化的记录下来。 1.遇到大量相同的文本，你如何进行去重处理呢？百亿文档去重算法: MINHASH_LSH 文档去重整体流程：   MY word记录一些思想碰撞的话语。 1.AI学习的方法：你能与多少智能体（人+AI）形成价值共生网络，决定了你的成功上限。 停止收藏”100个AI工具清单”，转而研究”1个问题的10种AI解法”。 黄金法则：在30%的精力里创新，用70%的精力把创新成果”坚持”到极致。例如，你发现AI+小红书是一个机会点（创新），接下来90天每天发3篇、测试30种模板、迭代100次（坚持），直到流程SOP化。 MY work AI视觉相关的研究 AI agent相关的开发 dify和fa...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">WT</div><div class="author-info-description">记录学习路上的点点滴滴，记得好好生活哦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/taogehengq"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG"><span class="toc-number">1.</span> <span class="toc-text">RAG</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 全面技能"/></a><div class="content"><a class="title" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能">Agent 全面技能</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 完整技术栈"/></a><div class="content"><a class="title" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈">RAG 完整技术栈</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG/" title="RAG 入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 入门"/></a><div class="content"><a class="title" href="/2026/01/11/RAG/" title="RAG 入门">RAG 入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI agent 开发知识总结"/></a><div class="content"><a class="title" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结">AI agent 开发知识总结</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora入门"/></a><div class="content"><a class="title" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门">Typora入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By WT</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

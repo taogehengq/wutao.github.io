@@ -1,0 +1,551 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>大模型开发学习路线 | WT's Blog</title><meta name="author" content="WT"><meta name="copyright" content="WT"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="大模型开发学习路线一、岗位能力地图（你需要会到什么程度）  编程与工程 Python&#x2F;TypeScript，异步与并发，API 设计，单元&#x2F;集成测试，Docker，基础云原生（K8s&#x2F;Helm）。   LLM 基础与调用 token&#x2F;上下文&#x2F;温度&#x2F;采样，系统提示与模式约束（JSON schema）、函数&#x2F;工具调用，多模型路由与回">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型开发学习路线">
+<meta property="og:url" content="https://wutaoblog.github.io/2026/01/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.html">
+<meta property="og:site_name" content="WT&#39;s Blog">
+<meta property="og:description" content="大模型开发学习路线一、岗位能力地图（你需要会到什么程度）  编程与工程 Python&#x2F;TypeScript，异步与并发，API 设计，单元&#x2F;集成测试，Docker，基础云原生（K8s&#x2F;Helm）。   LLM 基础与调用 token&#x2F;上下文&#x2F;温度&#x2F;采样，系统提示与模式约束（JSON schema）、函数&#x2F;工具调用，多模型路由与回">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png">
+<meta property="article:published_time" content="2026-01-11T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-11T07:05:38.791Z">
+<meta property="article:author" content="WT">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="大模型开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "大模型开发学习路线",
+  "url": "https://wutaoblog.github.io/2026/01/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/",
+  "image": "https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png",
+  "datePublished": "2026-01-11T02:00:00.000Z",
+  "dateModified": "2026-01-11T07:05:38.791Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "WT",
+      "url": "https://wutaoblog.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wutaoblog.github.io/2026/01/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '大模型开发学习路线',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(https://s2.loli.net/2024/01/08/2NLQjw1oVCxdg4v.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">WT's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">大模型开发学习路线</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">大模型开发学习路线</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-11T07:05:38.791Z" title="更新于 2026-01-11 15:05:38">2026-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="大模型开发学习路线"><a href="#大模型开发学习路线" class="headerlink" title="大模型开发学习路线"></a>大模型开发学习路线</h1><p>一、岗位能力地图（你需要会到什么程度）</p>
+<ul>
+<li>编程与工程<ul>
+<li>Python&#x2F;TypeScript，异步与并发，API 设计，单元&#x2F;集成测试，Docker，基础云原生（K8s&#x2F;Helm）。</li>
+</ul>
+</li>
+<li>LLM 基础与调用<ul>
+<li>token&#x2F;上下文&#x2F;温度&#x2F;采样，系统提示与模式约束（JSON schema）、函数&#x2F;工具调用，多模型路由与回退。</li>
+</ul>
+</li>
+<li>RAG 与检索<ul>
+<li>数据清洗与切块（chunk）、embedding 选型，混合检索（BM25+向量）、重排（rerank）、重复消解，召回评测。</li>
+</ul>
+</li>
+<li>微调与蒸馏<ul>
+<li>SFT&#x2F;LoRA&#x2F;QLoRA、指令数据构造、对齐（RLAIF&#x2F;RLHF 基本概念）、量化（INT8&#x2F;4）与部署兼容性。</li>
+</ul>
+</li>
+<li>评测与治理<ul>
+<li>黄金集构建、离线评测（检索&#x2F;回答&#x2F;安全）、线上反馈闭环、A&#x2F;B、可观测（日志&#x2F;追踪）、版本化与回滚。</li>
+</ul>
+</li>
+<li>推理与部署<ul>
+<li>vLLM&#x2F;TGI&#x2F;Ollama，连续批处理、KV cache、流式、超时与重试、熔断、限流、弹性扩缩。</li>
+</ul>
+</li>
+<li>安全与合规<ul>
+<li>越狱&#x2F;提示注入防护、PII 脱敏、内容审核、权限与审计；国内合规（等保、数据安全法、个保法）意识。</li>
+</ul>
+</li>
+<li>多模态与文档理解<ul>
+<li>OCR&#x2F;版面解析（PDF&#x2F;表格&#x2F;截图）、语音 ASR&#x2F;TTS、图文混合输入。</li>
+</ul>
+</li>
+<li>产品与ROI<ul>
+<li>需求拆解、指标体系、单位经济核算、上线灰度与推广。</li>
+</ul>
+</li>
+</ul>
+<p>二、16 周学习路线（可压缩&#x2F;拉伸）<br>第1–4周：打基础 + 最小可用产品</p>
+<ul>
+<li>目标：能独立做“文档问答 + 结构化输出 + 工具调用”的端到端 Demo，并接入日志。</li>
+<li>学习要点<ul>
+<li>LLM API 与函数调用；提示模板与JSON模式约束；流式输出。</li>
+<li>向量库与RAG基础：切块、embedding、BM25&#x2F;向量&#x2F;混合检索、简单重排。</li>
+<li>基础工程：异步、超时&#x2F;重试、速率限制、提示&#x2F;数据版本化、日志与追踪。</li>
+</ul>
+</li>
+<li>实作任务<ul>
+<li>做一个企业文档问答（本地PDF&#x2F;网页），支持引用出处、JSON 结构化摘要、函数调用检索。</li>
+<li>建10–30条黄金问题，记录R@K&#x2F;答案通过率与延迟。</li>
+</ul>
+</li>
+<li>验收标准<ul>
+<li>R@10≥0.75，答案通过率≥65%，P95延迟≤3s（云模型），错误率&lt;1%。</li>
+</ul>
+</li>
+</ul>
+<p>第5–8周：评测治理 + 体验成本优化</p>
+<ul>
+<li>学习要点<ul>
+<li>离线评测：检索与生成分开评；LLM-as-judge；A&#x2F;B 测试；观测平台（Langfuse&#x2F;自建）。</li>
+<li>质量优化：混合检索+重排（bge&#x2F;cohere&#x2F;jina rerank）、去重&#x2F;归并、查询改写，记忆与对话状态。</li>
+<li>成本性能：语义缓存、批处理、模型路由&#x2F;回退（大→小）、多供应商抽象。</li>
+<li>安全：越狱与注入测试、PII 脱敏、规则与阈值。</li>
+</ul>
+</li>
+<li>实作任务<ul>
+<li>给第一个项目接入评测流水线与缓存&#x2F;回退；出一页“质量-延迟-成本”曲线与取舍说明。</li>
+</ul>
+</li>
+<li>验收标准<ul>
+<li>答案通过率提升≥10pp；P95 延迟下降≥30%；单请求成本下降≥30%；安全用例通过率≥95%。</li>
+</ul>
+</li>
+</ul>
+<p>第9–12周：微调与开源部署</p>
+<ul>
+<li>学习要点<ul>
+<li>数据集构造与清洗；SFT&#x2F;LoRA&#x2F;QLoRA；小模型蒸馏；评测对比“仅RAG vs RAG+微调”。</li>
+<li>推理服务：vLLM&#x2F;TGI，连续批、KV cache、量化；灰度与回滚。</li>
+</ul>
+</li>
+<li>实作任务<ul>
+<li>选7B–14B开源模型，对你的场景做小规模LoRA（5k–50k样本）；用vLLM部署推理对外服务。</li>
+</ul>
+</li>
+<li>验收标准<ul>
+<li>在黄金集上，相比仅RAG：关键指标显著提升（&gt;5–10pp）或在同等质量下成本&#x2F;延迟更优；QPS≥20（视模型与硬件）。</li>
+</ul>
+</li>
+</ul>
+<p>第13–16周：垂直场景 MVP + 上线硬化</p>
+<ul>
+<li>选题：客服质检、合同审阅、代码辅助、售前问答、运营文案等。</li>
+<li>学习要点<ul>
+<li>多模态（PDF&#x2F;OCR&#x2F;截图）、权限与租户隔离、审计追踪、告警与SLO、容灾。</li>
+</ul>
+</li>
+<li>实作任务<ul>
+<li>打磨可在线演示的 MVP，接入真实小规模用户；出版本迭代节奏与Roadmap。</li>
+</ul>
+</li>
+<li>验收标准<ul>
+<li>端到端：召回&#x2F;准确&#x2F;安全&#x2F;延迟&#x2F;成本指标齐全；能演示故障回退与审计；完成一轮用户反馈闭环。</li>
+</ul>
+</li>
+</ul>
+<p>三、必备工具与选型（保持“可替换”）</p>
+<ul>
+<li>模型与供应商<ul>
+<li>国际：OpenAI、Anthropic、Google、Mistral；开源：Llama 3.x、Mistral、Qwen2&#x2F;2.5、Baichuan、Yi 等。</li>
+<li>国内：阿里通义（DashScope&#x2F;Qwen）、百度千帆（文心）、腾讯混元、讯飞星火、百川等。</li>
+</ul>
+</li>
+<li>开发与编排<ul>
+<li>通用：Python&#x2F;TS、FastAPI&#x2F;Express、Pydantic。</li>
+<li>编排&#x2F;Agent：LangChain、LlamaIndex、DSPy（或自研轻量DAG&#x2F;状态机）。</li>
+</ul>
+</li>
+<li>向量检索<ul>
+<li>FAISS、pgvector&#x2F;Postgres、Milvus&#x2F;Weaviate；文本检索：BM25（Elasticsearch&#x2F;Opensearch）。</li>
+<li>Embedding：bge-m3、e5-large、或供应商 embedding。</li>
+<li>重排：bge-reranker、Cohere&#x2F;Jina Rerank。</li>
+</ul>
+</li>
+<li>观察与评测<ul>
+<li>观测：Langfuse、OpenTelemetry+ELK&#x2F;ClickHouse。</li>
+<li>评测：Ragas、TruLens、DeepEval、自建黄金集与判分器。</li>
+</ul>
+</li>
+<li>部署与推理<ul>
+<li>vLLM、TGI、Ollama（本地）、KServe&#x2F;Ray Serve；容器：Docker&#x2F;K8s；监控：Prometheus&#x2F;Grafana。</li>
+</ul>
+</li>
+<li>数据处理&#x2F;文档理解<ul>
+<li>解析：Unstructured、llama-parse、Textract；OCR：PaddleOCR&#x2F;Tesseract；表格&#x2F;版面：layoutparser。</li>
+</ul>
+</li>
+</ul>
+<p>四、作品集路线（面试最有说服力）</p>
+<ul>
+<li>项目1：企业知识库RAG<ul>
+<li>指标：R@10、nDCG、答案通过率、引用正确率、P95延迟、成本&#x2F;请求、缓存命中率。</li>
+</ul>
+</li>
+<li>项目2：工具调用工作流<ul>
+<li>工具：检索&#x2F;SQL&#x2F;日程&#x2F;第三方API；有状态编排与回退；显示“不可观测的Agent”对比“显式DAG”的收益。</li>
+</ul>
+</li>
+<li>项目3：垂直场景MVP（任选其一）<ul>
+<li>合同条款抽取与风险提示（结构化JSON+证据页码）、客服质检（违规检测+评分）、代码评审（issue 建议+打 patch）。</li>
+</ul>
+</li>
+<li>可选：微调小模型<ul>
+<li>用 LoRA&#x2F;QLoRA 做 7B 指令微调，和“仅RAG”做消融对比。</li>
+</ul>
+</li>
+</ul>
+<p>五、必须掌握的评测指标（拿来即用）</p>
+<ul>
+<li>检索：Recall@K、nDCG、MRR、查询覆盖率、重复率。</li>
+<li>生成：LLM-as-judge 的 helpfulness&#x2F;groundedness、事实一致性、引用命中率；必要时ROUGE&#x2F;Exact Match。</li>
+<li>系统：P50&#x2F;P95&#x2F;P99 延迟、QPS、错误率、重试率、回退率、缓存命中率、工具成功率。</li>
+<li>成本：tokens&#x2F;请求、单位成本、缓存节省%、不同模型路由占比。</li>
+<li>安全：注入&#x2F;越狱通过率、敏感词&#x2F;PII 识别率、拒答准确率。</li>
+</ul>
+<p>六、面试与求职准备</p>
+<ul>
+<li>文档化你的取舍：为什么选混合检索、何时用重排&#x2F;微调、如何做回退与容错、如何降本提速。</li>
+<li>一页架构图+一页指标表+一页评测方法（含黄金集样例与抽样误差）。</li>
+<li>准备系统设计题：设计企业RAG&#x2F;代码助手&#x2F;内容审核流水线；讲清数据、评测、SLO 与运维。</li>
+<li>代码题：JSON 模式约束、函数调用、检索重排、并发与超时。</li>
+</ul>
+<p>七、强力加分项（区分度高）</p>
+<ul>
+<li>评测与治理体系落地<ul>
+<li>会构造高质量黄金集、搭 LLM-as-judge、线上反馈闭环与自动回归测试。</li>
+</ul>
+</li>
+<li>推理与成本优化<ul>
+<li>vLLM 连续批、KV cache 命中优化、语义缓存、分层路由；能做单位经济核算与容量规划。</li>
+</ul>
+</li>
+<li>安全与合规<ul>
+<li>对越狱&#x2F;注入有实战对抗策略；PII&#x2F;涉敏数据流全链路脱敏与审计；国内等保&#x2F;数据出境意识。</li>
+</ul>
+</li>
+<li>多模态与复杂文档<ul>
+<li>OCR+版面解析+RAG，能处理表格&#x2F;截图&#x2F;扫描PDF 并给出稳定的证据定位。</li>
+</ul>
+</li>
+<li>小模型能力<ul>
+<li>LoRA&#x2F;QLoRA&#x2F;量化部署、蒸馏到小模型或规则混合以提升毛利。</li>
+</ul>
+</li>
+<li>平台化能力<ul>
+<li>多模型抽象层、灰度&#x2F;金丝雀、SLO&#x2F;告警、K8s+KServe&#x2F;Ray、私有化部署。</li>
+</ul>
+</li>
+<li>业务洞察与沟通<ul>
+<li>能把技术指标转译为业务价值与ROI；写清晰的设计文档；跨团队协作推进落地。</li>
+</ul>
+</li>
+<li>开源贡献&#x2F;技术影响力<ul>
+<li>在 HF&#x2F;LangChain&#x2F;Ragas 等提PR或发布小工具；技术博客&#x2F;分享。</li>
+</ul>
+</li>
+</ul>
+<p>八、建议的学习资源（任选其一条线深入）</p>
+<ul>
+<li>体系化<ul>
+<li>Hugging Face Transformers&#x2F;TRL 文档</li>
+<li>LangChain&#x2F;LlamaIndex 官方教程</li>
+<li>vLLM&#x2F;TGI 文档与示例</li>
+</ul>
+</li>
+<li>论文与要点<ul>
+<li>Attention Is All You Need、InstructGPT&#x2F;RLHF 概念、Lost in the Middle（长上下文）、Toolformer&#x2F;Function Calling、RAG 系列综述。</li>
+</ul>
+</li>
+<li>实战博客&#x2F;仓库<ul>
+<li>RAGas&#x2F;TruLens 示例、Milvus&#x2F;pgvector 实战、DSPy 提示最优化。</li>
+</ul>
+</li>
+</ul>
+<h1 id="学习AI（人工智能）"><a href="#学习AI（人工智能）" class="headerlink" title="学习AI（人工智能）"></a>学习AI（人工智能）</h1><p>学习AI（人工智能）是一个系统性过程，需要结合<strong>数学基础、编程能力、理论知识、实践项目</strong>和<strong>持续跟进前沿</strong>。以下是分阶段的详细学习路径，适合零基础或有一定基础的学习者参考：</p>
+<p><strong>一、打牢基础：数学与编程</strong></p>
+<p>AI的核心是“用数学模型解决问题”，编程是实现模型的工具。这一步是基石，不可跳过。</p>
+<p><strong>1. 数学基础（核心！核心！核心！）</strong>  </p>
+<p>AI涉及大量数学推导，至少需掌握以下核心领域：  </p>
+<ul>
+<li><strong>线性代数</strong>：向量、矩阵运算（加减乘、转置、逆、特征值&#x2F;特征向量）、空间变换（如PCA降维的原理）。  <ul>
+<li>推荐资源：MIT 18.06线性代数课（B站&#x2F;网易公开课）、《线性代数及其应用》（Gilbert Strang）。</li>
+</ul>
+</li>
+<li><strong>微积分</strong>：导数、偏导数、梯度下降原理（AI优化的核心）、多变量函数极值。  <ul>
+<li>推荐资源：3Blue1Brown《微积分的本质》（B站可视化讲解，直观理解）、《普林斯顿微积分读本》。</li>
+</ul>
+</li>
+<li><strong>概率与统计</strong>：概率分布（正态分布、二项分布）、期望&#x2F;方差、最大似然估计、贝叶斯定理（朴素贝叶斯、贝叶斯网络的基础）。  <ul>
+<li>推荐资源：《深入浅出统计学》（适合零基础）、Coursera《概率统计入门》（吴恩达）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. 编程基础（工具！工具！工具！）</strong>  </p>
+<p>AI主流工具是<strong>Python</strong>（生态最完善，库最多），需掌握：  </p>
+<ul>
+<li><strong>Python基础</strong>：语法（变量、循环、函数、类）、数据结构（列表、字典、数组）。  <ul>
+<li>推荐资源：菜鸟教程（快速入门）、B站“黑马程序员Python基础”（系统全面）。</li>
+</ul>
+</li>
+<li><strong>数据处理与可视化库</strong>：  <ul>
+<li><code>NumPy</code>（矩阵运算，AI的“数学计算器”）、<code>Pandas</code>（数据清洗&#x2F;分析，处理表格数据）、<code>Matplotlib/Seaborn</code>（画图，可视化数据和模型结果）。  </li>
+<li>推荐练习：用Pandas处理CSV数据（如Kaggle的Titanic数据集），用Matplotlib画折线图&#x2F;散点图。</li>
+</ul>
+</li>
+<li><strong>开发工具</strong>：<code>Jupyter Notebook</code>（交互式编程，适合调试和展示）、<code>Anaconda</code>（管理Python环境和库）、<code>Google Colab</code>（免费GPU，无需本地配置）。</li>
+</ul>
+<p><strong>二、核心理论：机器学习（ML）</strong>  </p>
+<p>机器学习是AI的基础，是“让机器从数据中学习规律”的方法论。先掌握经典算法，再学深度学习。</p>
+<p><strong>1. 机器学习入门（理解“学习”的本质）</strong>  </p>
+<p>先搞懂核心概念：  </p>
+<ul>
+<li>监督学习（有标签数据：预测房价、识别猫&#x2F;狗）、无监督学习（无标签数据：用户分群、异常检测）、强化学习（试错学习：AlphaGo下棋）。  </li>
+<li>模型评估：准确率、精确率、召回率、F1-score、过拟合&#x2F;欠拟合（如何用正则化、交叉验证解决）。</li>
+</ul>
+<p><strong>2. 经典算法（逐个攻破，理论+代码）</strong>  </p>
+<p>按“简单→复杂”顺序学习，每个算法先理解<strong>数学原理</strong>，再用代码实现（调包+手动推导）：  </p>
+<ul>
+<li><strong>监督学习</strong>：  <ul>
+<li>线性回归（预测连续值，如房价）、逻辑回归（二分类，如垃圾邮件识别）→ 理解梯度下降优化过程。  </li>
+<li>决策树、随机森林（可解释性强，处理分类&#x2F;回归）→ 理解信息熵、基尼系数。  </li>
+<li>SVM（支持向量机，小样本分类）→ 理解核函数（将低维数据映射到高维）。  </li>
+<li>集成学习（AdaBoost、XGBoost，工业界常用）→ 理解“弱分类器集成变强”。</li>
+</ul>
+</li>
+<li><strong>无监督学习</strong>：  <ul>
+<li>K-Means（聚类，用户分群）→ 理解距离度量（欧氏距离）、肘部法则选K值。  </li>
+<li>PCA（主成分分析，降维可视化）→ 理解协方差矩阵、特征值分解。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 学习资源（系统课程+教材）</strong>  </p>
+<ul>
+<li><strong>课程</strong>：吴恩达《Machine Learning》（Coursera经典课，数学推导清晰，作业用Octave，但可改用Python复现）；B站“李宏毅机器学习”（通俗易懂，案例丰富）。  </li>
+<li><strong>教材</strong>：周志华《机器学习》（西瓜书，理论严谨，适合进阶）；《机器学习实战》（用Python实现算法，偏实践）。  </li>
+<li><strong>工具库</strong>：<code>Scikit-learn</code>（Python机器学习库，一行代码调用算法，快速验证想法）。</li>
+</ul>
+<p><strong>三、进阶：深度学习（DL）</strong>  </p>
+<p>深度学习是机器学习的分支，基于神经网络（模仿人脑神经元），擅长处理图像、文本等复杂数据。</p>
+<p><strong>1. 神经网络基础（从“神经元”到“网络”）</strong>  </p>
+<ul>
+<li>感知机（单个神经元）→ 多层神经网络（前馈网络）→ 反向传播（神经网络训练的核心，用微积分求梯度更新权重）。  </li>
+<li>激活函数：ReLU、Sigmoid、Tanh（解决非线性问题）。</li>
+</ul>
+<p><strong>2. 经典深度学习模型（按应用场景学）</strong>  </p>
+<ul>
+<li><strong>计算机视觉（CV）</strong>：  <ul>
+<li>CNN（卷积神经网络，处理图像）→ 理解卷积层（提取边缘&#x2F;纹理）、池化层（降维）、全连接层（分类）。  </li>
+<li>经典模型：LeNet-5（手写数字识别）、AlexNet（ImageNet竞赛冠军，开启深度学习热潮）、ResNet（解决深层网络梯度消失，用残差连接）。</li>
+</ul>
+</li>
+<li><strong>自然语言处理（NLP）</strong>：  <ul>
+<li>RNN&#x2F;LSTM&#x2F;GRU（处理序列数据，如文本、语音）→ 理解循环结构解决“时序依赖”，LSTM解决长序列遗忘问题。  </li>
+<li>Transformer（2017年革命，NLP主流架构）→ 理解自注意力机制（Self-Attention）、Encoder-Decoder结构（BERT、GPT的基础）。</li>
+</ul>
+</li>
+<li><strong>其他</strong>：GAN（生成对抗网络，生成逼真图像）、AutoEncoder（自编码器，降维&#x2F;去噪）。</li>
+</ul>
+<p><strong>3. 深度学习框架（选一个深入，别贪多）</strong>  </p>
+<p>用框架实现模型，避免重复造轮子：  </p>
+<ul>
+<li><strong>PyTorch</strong>（推荐初学者）：动态图，调试方便，代码直观（Facebook开发，学术圈常用）。  </li>
+<li><strong>TensorFlow&#x2F;Keras</strong>（工业界常用）：静态图，适合部署（Google开发，有成熟生态）。  <ul>
+<li>学习资源：李沐《动手学深度学习》（PyTorch版，B站视频+开源代码，边学边敲）、TensorFlow官方教程（含Colab在线练习）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>四、实践！实践！实践！（关键！）</strong>  </p>
+<p>AI是“做出来”的，光看理论永远学不会。通过项目巩固知识，积累经验。</p>
+<p><strong>1. 入门级项目（用公开数据集练手）</strong>  </p>
+<ul>
+<li>数据集：Kaggle（数据竞赛平台，找“Getting Started”标签的比赛，如Titanic生存预测、房价预测）、UCI机器学习库（简单数据集）。  </li>
+<li>目标：用Scikit-learn实现经典算法，用Matplotlib可视化结果，写分析报告（为什么模型效果好&#x2F;差？如何改进？）。</li>
+</ul>
+<p><strong>2. 进阶项目（深度学习应用）</strong>  </p>
+<ul>
+<li><strong>CV方向</strong>：图像分类（CIFAR-10数据集，用CNN实现）、目标检测（用YOLOv5识别图片中的物体）。  </li>
+<li><strong>NLP方向</strong>：文本分类（用BERT微调判断电影评论正负）、情感分析（爬取微博数据，分析用户情绪）。  </li>
+<li><strong>工具</strong>：用PyTorch&#x2F;TensorFlow复现论文模型（如简单CNN），提交到GitHub（积累作品集）。</li>
+</ul>
+<p><strong>3. 参加竞赛&#x2F;开源贡献</strong>  </p>
+<ul>
+<li>Kaggle竞赛（赢了有奖金，输了也能看大佬代码）、天池（阿里系竞赛平台）。  </li>
+<li>GitHub：给开源项目提PR（如修复文档bug）、复现经典论文代码（如Transformer）。</li>
+</ul>
+<p><strong>五、领域深入（选方向，别贪全）</strong>  </p>
+<p>AI子领域太多，选一个感兴趣的方向深耕，成为“专才”：  </p>
+<ul>
+<li><strong>计算机视觉（CV）</strong>：目标检测、图像分割、自动驾驶感知。  </li>
+<li><strong>自然语言处理（NLP）</strong>：大模型微调（如用LLaMA、ChatGLM做定制化对话）、机器翻译、文本生成。  </li>
+<li><strong>强化学习（RL）</strong>：游戏AI（用OpenAI Gym环境训练小车避障）、机器人控制。  </li>
+<li><strong>推荐系统</strong>：用协同过滤&#x2F;深度学习做商品推荐（如MovieLens数据集）。</li>
+</ul>
+<p><strong>六、持续跟进前沿（AI发展太快！）</strong>  </p>
+<p>AI技术迭代极快（如2023年GPT-4、2024年Sora），需保持学习：  </p>
+<p><strong>1. 关注最新研究</strong>  </p>
+<ul>
+<li>论文：arXiv（cs.LG机器学习、cs.CV计算机视觉方向，每天更新）、Papers With Code（论文+代码，直接看实现）。  </li>
+<li>顶会：NeurIPS、ICML、ICLR（AI领域三大顶会，每年12月&#x2F;7月&#x2F;5月召开，关注“Best Paper”）。</li>
+</ul>
+<p><strong>2. 社区与资源</strong>  </p>
+<ul>
+<li>博客：Medium（Towards Data Science专栏）、机器之心&#x2F;量子位（中文AI资讯）。  </li>
+<li>视频：YouTube（Two Minute Papers，解读前沿论文）、B站（李沐、跟李宏毅学AI）。  </li>
+<li>社区：Reddit r&#x2F;MachineLearning（讨论热点）、GitHub（看Star多的开源项目，如Hugging Face Transformers库）。</li>
+</ul>
+<p><strong>避坑指南（新手常犯错误）</strong>  </p>
+<ol>
+<li><strong>别跳过数学</strong>：“数学太难，直接调包行不行？” → 不行！不懂梯度下降，调参永远是“碰运气”；不懂注意力机制，用GPT时不知道怎么优化。  </li>
+<li><strong>别只看不动手</strong>：“我看完了李沐的课，应该会了吧？” → 手生&#x3D;不会！代码必须自己敲，报错了就debug（Google&#x2F;Stack Overflow是你的朋友）。  </li>
+<li><strong>别贪多求快</strong>：“今天学CNN，明天学Transformer，下周搞GAN！” → 每个算法吃透（原理+代码+项目），比囫囵吞枣学10个强。</li>
+</ol>
+<p><strong>总结路径</strong>  </p>
+<p><strong>零基础→入门</strong>：数学（线代&#x2F;概率）→ Python（NumPy&#x2F;Pandas）→ 机器学习（Scikit-learn+经典算法）→ 小项目（Kaggle）。<br><strong>进阶→专业</strong>：深度学习（PyTorch+Transformer）→ 方向深耕（CV&#x2F;NLP）→ 复杂项目（顶会论文复现）→ 跟进前沿（读论文+社区）。  </p>
+<p>AI学习是“马拉松”，但每一步都有明确的目标和反馈。坚持6个月，你就能从“小白”变成能独立做项目的AI实践者！</p>
+<h2 id="常见概念的理解："><a href="#常见概念的理解：" class="headerlink" title="常见概念的理解："></a>常见概念的理解：</h2><h3 id="微调（Fine-tuning）和对齐-（Alignment）的区别"><a href="#微调（Fine-tuning）和对齐-（Alignment）的区别" class="headerlink" title="微调（Fine-tuning）和对齐 （Alignment）的区别"></a>微调（Fine-tuning）和对齐 （Alignment）的区别</h3><p><img src="C:\Users\vip\AppData\Roaming\Typora\typora-user-images\image-20250828102301577.png" alt="image-20250828102301577"></p>
+<p>微调 &#x3D; 让模型“更擅长做什么”；<br>对齐 &#x3D; 让模型“按人类期望的方式做”。<br>技术上一个重“模仿高质量示范”，一个重“优化人类偏好和约束”；应用上一个产出“领域专家”，一个产出“可信助手”。</p>
+<h3 id="八种现代-LLM-架构大比较"><a href="#八种现代-LLM-架构大比较" class="headerlink" title="八种现代 LLM 架构大比较"></a>八种现代 LLM 架构大比较</h3><p>八种目前在工业界与学术圈最常被讨论的「现代 LLM 架构」可以按两条主线来归纳：</p>
+<p>• 主线 A：Transformer 家族内部的“微观”结构演进（4 种）<br>• 主线 B：跳出传统 Dense Transformer 的“宏观”范式革新（4 种）</p>
+<p>下面把八位选手一次性摆到同一张擂台，用「技术关键词 → 关键差异 → 一句话优势&#x2F;劣势」的三段式速览。</p>
+<p>──────────────────<br>A. Transformer 微观演进（仍在 Decoder-only 框架里做“手术”）</p>
+<ol>
+<li>Dense Decoder（Llama-3 &#x2F; Gemma-3 &#x2F; OLMo-2）<br>关键词：RMSNorm + RoPE + GQA&#x2F;SWA + SwiGLU<br>差异：最“经典”的堆叠，参数全部激活，无稀疏化。<br>一句话：易调试、易部署，但随规模线性涨成本。</li>
+<li>GQA（Grouped-Query Attention）<br>Llama-3、Mistral-Small-3.1 使用。<br>差异：KV 头分组，推理显存 ∝ (n_kv_heads) 而非 (n_heads)。<br>一句话：把 KV-cache 砍掉 3-8×，吞吐飞起，效果几乎不掉。</li>
+<li>MLA（Multi-Head Latent Attention）<br>DeepSeek-V3 首创。<br>差异：先把 K&#x2F;V 投影到低维 latent，再多头展开 → 进一步压缩 KV-cache 2× 以上，且比 GQA 保更多表达能力。<br>一句话：KV-cache 极限压缩术，实现难度比 GQA 高。</li>
+<li>MoE-Decoder（Llama-4 &#x2F; DeepSeek-V3 &#x2F; Qwen3-MoE）<br>关键词：Top-K 路由 + 专家并行 + 负载均衡 loss<br>差异：总参数 &gt;100 B，但每 token 只激活 5-10 %。<br>一句话：用“专家稀疏”换“计算稠密”，训练贵、推理便宜。</li>
+</ol>
+<p>──────────────────<br>B. 跳出 Dense Transformer 的宏观革新</p>
+<ol>
+<li>RAG-LLM（检索增强生成）<br>关键词：Encoder+Retriever+Decoder 三段式，实时外挂知识库<br>差异：参数不动，把问题交给“检索 + 拼接提示”。<br>一句话：不改模型就能“长”出新知识，但延迟与检索质量绑定。</li>
+<li>Mixture-of-Experts-Plus（专家混合再进化：Expert Choice、Expert Parallelism-v2）<br>关键词：动态专家容量、共享专家、路由表学习<br>差异：解决传统 MoE 负载不均、通信爆炸。<br>一句话：让 MoE 真正跑在千卡级集群而不崩，千卡效率 ↑30 %。</li>
+<li>Mamba &#x2F; State-Space 序列模型<br>关键词：SSM Layer 替代 Attention，O(N) 显存<br>差异：彻底告别 QKV 投影，用卷积+门控状态传递。<br>一句话：百万级上下文只需线性内存，但生成质量仍落后于同规模 Transformer。</li>
+<li>Long-Context Transformer（Ring-Attention + Flash-Sequencer）<br>关键词：分块 Flash-Attention、梯度 checkpoint、序列并行<br>差异：不改模型结构，用系统级技巧把上下文拉到 1-10 M tokens。<br>一句话：工程外挂，让 Llama-3 8 B 也能一次读完整本《三体》。</li>
+</ol>
+<p><img src="C:\Users\vip\AppData\Roaming\Typora\typora-user-images\image-20250828102849124.png" alt="image-20250828102849124"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io">WT</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io/2026/01/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">https://wutaoblog.github.io/2026/01/11/大模型开发学习路线/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wutaoblog.github.io" target="_blank">WT's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91/">大模型开发</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/" title="项目经验"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">项目经验</div></div><div class="info-2"><div class="info-item-1">Project Experience1 rag知识库项目1.1 工程化落地我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大模型進行輸出）。 核心流程：原始文档 → 文档预处理（结构化+清洗）→ 文档切分+增强 → 向量化/索引构建 → 检索（多策略召回）→ 重排（精排）→ 提示工程+生成 → 输出/反馈优化 核心逻辑：用标准化的文档处理保证数据质量 → 用多策略检索保证召回率 → 用重排保证准确率 → 用提示工程 + 幻觉控制保证生成质量 → 用工程化手段保证稳定性。 阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）核心目标：从多渠道获取原始文档，建立「文档版本控制机制」，避免数据丢失或版本混乱，为后续处理提供 “干净、可追溯的数据源”。 阶段 2：文档理解层：解析...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E5%A5%BD%E5%A5%BD%E9%94%BB%E7%82%BC/" title="好好锻炼"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">好好锻炼</div></div><div class="info-2"><div class="info-item-1">好好锻炼一、力量训练：每周 3 次，每次 30-40 分钟（高效增肌 &#x2F; 塑形，提升代谢） 核心动作组合（全身覆盖，兼顾大肌群）： 下肢：深蹲（20 次 &#x2F; 组）、箭步蹲（左右各 10 次 &#x2F; 组）、臀桥（25 次 &#x2F; 组） 上肢：俯卧撑（跪姿 &#x2F; 标准，15 次 &#x2F; 组）、平板支撑（40 秒 &#x2F; 组）、俯身划船（可用矿泉水瓶当哑铃，12 次 &#x2F; 组） 核心：卷腹（20 次 &#x2F; 组）、俄罗斯转体（左右各 15 次 &#x2F; 组）安排：每个动作 3 组，组间休息 30 秒，全程 30 分钟搞定。   小器械加持（提升强度，可选）： 哑铃（1-3kg，女生）&#x2F;5-8kg（男生）：哑铃弯举、肩上推、侧平举（练肩背手臂） 弹力带：侧步走（练臀）、划船（练背）、手臂屈伸（练肱三头肌）优势：小器械易收纳，适合小户型，训练针对性更强。    二、有氧训练：每周 3 次，每次 20-30 分钟（燃脂 + 提升心肺）1. 高效燃脂型（适合时间紧张） HIIT（高强度间歇训练）： 动作：开合跳、高...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/11/MY%20mind-%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%B5%81%E9%80%9D%E7%9A%84%E8%AE%B0%E5%BF%86/" title="MY mind-记录时间流逝的记忆"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">MY mind-记录时间流逝的记忆</div></div><div class="info-2"><div class="info-item-1">MY mind-记录时间流逝的记忆记录时间流逝的记忆，你的思想可以被改变但是不能没有痕迹！！！ MY idea如果你有一个好的想法，你可以从0开始的记录下来。  我没有什么爱好，除了健身，看书，学英语。早睡早起，晚上健身，早上看书，周末学习英语。 我想使用AI开个账号。做啥呢？科普、？短视频？短剧？图文？小说？还是agent复现？  MY plan如果你有什么想做的事情，你可以流程化的记录下来。 1.遇到大量相同的文本，你如何进行去重处理呢？百亿文档去重算法: MINHASH_LSH 文档去重整体流程：   MY word记录一些思想碰撞的话语。 1.AI学习的方法：你能与多少智能体（人+AI）形成价值共生网络，决定了你的成功上限。 停止收藏”100个AI工具清单”，转而研究”1个问题的10种AI解法”。 黄金法则：在30%的精力里创新，用70%的精力把创新成果”坚持”到极致。例如，你发现AI+小红书是一个机会点（创新），接下来90天每天发3篇、测试30种模板、迭代100次（坚持），直到流程SOP化。 MY work AI视觉相关的研究 AI agent相关的开发 dify和fa...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%B4%A6%E5%8F%B7%E4%BF%A1%E6%81%AF/" title="账号密码"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">账号密码</div></div><div class="info-2"><div class="info-item-1">一些账号  ak sk </div></div></div></a><a class="pagination-related" href="/2026/01/11/%E4%BB%B7%E5%80%BC%E5%B1%95%E7%A4%BA/" title="价值展示"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">价值展示</div></div><div class="info-2"><div class="info-item-1">价值展示 足够强大-领袖气质。 硬价值—-钱，颜值，身材，地位。价值越高，分数越高。钱可以装，不要寒酸气，颜值需要收拾，肌肉合适。软价值—-内在特质。幽默，领导力，光环效应，有主见。 无意识展示价值。 拉升关系。  吸引7步法 开场白–激发回复欲望，朋友圈，我的状态加感受，延续话题。 交换基本信息–只说半句，一句正经一句逗比。表演型人格 拉近距离–装b，有价值。侧面，让女生主动问。 形象塑造– 升温关系– 可得性– 邀约– 什么是黄毛？ 答案是有颜值有身材有物质条件有审美有学习力有方向感有执行力有原则有格局有边界有攻击性有主体性勇敢情绪稳定 </div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%A7%86%E8%A7%89%E7%AE%97%E6%B3%95/" title="视觉算法"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">视觉算法</div></div><div class="info-2"><div class="info-item-1">视觉算法1. CV子类CV 包含了图像分类、物体检测、图像分割、人脸识别、OCR（文字识别）、三维重建等众多子方向。 一、图像分类图像分类是 CV 最基础的任务，目标是给图像分配唯一的类别标签（如 “猫”“狗”“汽车”）。    类型 经典算法 &#x2F; 模型 核心特点 &amp; 适用场景    传统算法 1. HOG+SVM2. SIFT+BoW3. KNN &#x2F; 朴素贝叶斯 1. HOG+SVM：早期行人 &#x2F; 车辆分类；2. SIFT+BoW：基于特征词袋的通用分类；3. 简单场景，精度低   深度学习 1. LeNet-5（1998）2. AlexNet（2012）3. VGG-16&#x2F;19（2014）4. GoogLeNet（Inception）5. ResNet（2015）6. MobileNet（2017）7. ViT（2020） 1. LeNet：CNN 开山之作（手写数字识别）；2. AlexNet：ImageNet 夺冠，开启深度学习 CV 时代；3. VGG：规整卷积核设计，易迁移；4. GoogLeNet：多尺度特征融合；5....</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E5%89%8D%E7%AB%AF/" title="前端起步"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">前端起步</div></div><div class="info-2"><div class="info-item-1">前端启动前端项目的步骤： 首先进入前端目录   cd rag-project01-framework&#x2F;frontend  安装依赖（如果还没有安装的话）   npm install  启动开发服务器  npm run dev 一、 项目的逻辑解析1. 项目的“骨架” - 文件结构一个前端项目就像一栋建筑，文件和文件夹就是它的结构。  package.json：项目清单和“身份证”。它记录了项目叫什么名字、版本号多少、依赖了哪些第三方库（如 vue, element-plus, echarts），以及定义了一些快捷命令（如 npm run dev）。  vite.config.ts：项目的“构建配置”。Vite 是我们的构建工具，这个文件告诉 Vite 如何打包我们的代码，比如我们在这里配置了 Element Plus 的自动导入插件。  1src  目录： 项目的“核心代码区” ，我们绝大部分工作都在这里。  main.ts：项目的“入口”。程序从这里开始运行。它的主要工作是创建 Vue 应用实例，并把它“挂载”到 index.html 的一个 DOM 节点上（通常是 ...</div></div></div></a><a class="pagination-related" href="/2026/01/11/RAG/" title="RAG 入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">RAG 入门</div></div><div class="info-2"><div class="info-item-1">RAG什么是RAG? RAG（Retrieval-Augmented Generation，检索增强生成）一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而显著降低幻觉、提升时效性与可溯源性。其典型流程：Indexing → Retrieval → Augmentation → Generation。一句话解释就是：先用“搜索引擎”找到相关文档，再让“作文高手”参考这些资料写答案，既新鲜又靠谱。 实现方式 1.1平台实现 fastgpt、coze、dify等 1.2代码实现 代码有哪些技术栈？  具体技术细节有哪些？  文档提取  1.1txt问本提取 1.2pdf提取工具  1.3表格提前工具 使用Llama Hub中的Database Reader工具连接MySQL数据库，并将数据库表数据加载到Llama Index的Documents...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">WT</div><div class="author-info-description">记录学习路上的点点滴滴，记得好好生活哦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/taogehengq"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF"><span class="toc-number">1.</span> <span class="toc-text">大模型开发学习路线</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0AI%EF%BC%88%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">学习AI（人工智能）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">常见概念的理解：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AE%E8%B0%83%EF%BC%88Fine-tuning%EF%BC%89%E5%92%8C%E5%AF%B9%E9%BD%90-%EF%BC%88Alignment%EF%BC%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.1.1.</span> <span class="toc-text">微调（Fine-tuning）和对齐 （Alignment）的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E7%A7%8D%E7%8E%B0%E4%BB%A3-LLM-%E6%9E%B6%E6%9E%84%E5%A4%A7%E6%AF%94%E8%BE%83"><span class="toc-number">2.1.2.</span> <span class="toc-text">八种现代 LLM 架构大比较</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 全面技能"/></a><div class="content"><a class="title" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能">Agent 全面技能</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 完整技术栈"/></a><div class="content"><a class="title" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈">RAG 完整技术栈</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG/" title="RAG 入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 入门"/></a><div class="content"><a class="title" href="/2026/01/11/RAG/" title="RAG 入门">RAG 入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI agent 开发知识总结"/></a><div class="content"><a class="title" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结">AI agent 开发知识总结</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora入门"/></a><div class="content"><a class="title" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门">Typora入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By WT</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

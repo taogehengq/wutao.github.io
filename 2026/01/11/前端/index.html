@@ -1,0 +1,296 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>前端起步 | WT's Blog</title><meta name="author" content="WT"><meta name="copyright" content="WT"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前端启动前端项目的步骤： 首先进入前端目录   cd rag-project01-framework&#x2F;frontend  安装依赖（如果还没有安装的话）   npm install  启动开发服务器  npm run dev 一、 项目的逻辑解析1. 项目的“骨架” - 文件结构一个前端项目就像一栋建筑，文件和文件夹就是它的结构。  package.json：项目清单和“身份证”。它记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端起步">
+<meta property="og:url" content="https://wutaoblog.github.io/2026/01/11/%E5%89%8D%E7%AB%AF/index.html">
+<meta property="og:site_name" content="WT&#39;s Blog">
+<meta property="og:description" content="前端启动前端项目的步骤： 首先进入前端目录   cd rag-project01-framework&#x2F;frontend  安装依赖（如果还没有安装的话）   npm install  启动开发服务器  npm run dev 一、 项目的逻辑解析1. 项目的“骨架” - 文件结构一个前端项目就像一栋建筑，文件和文件夹就是它的结构。  package.json：项目清单和“身份证”。它记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png">
+<meta property="article:published_time" content="2026-01-11T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-11T07:08:01.145Z">
+<meta property="article:author" content="WT">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "前端起步",
+  "url": "https://wutaoblog.github.io/2026/01/11/%E5%89%8D%E7%AB%AF/",
+  "image": "https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png",
+  "datePublished": "2026-01-11T02:00:00.000Z",
+  "dateModified": "2026-01-11T07:08:01.145Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "WT",
+      "url": "https://wutaoblog.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wutaoblog.github.io/2026/01/11/%E5%89%8D%E7%AB%AF/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '前端起步',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(https://s2.loli.net/2024/01/08/2NLQjw1oVCxdg4v.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">WT's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">前端起步</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">前端起步</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-11T07:08:01.145Z" title="更新于 2026-01-11 15:08:01">2026-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h1><h2 id="启动前端项目的步骤："><a href="#启动前端项目的步骤：" class="headerlink" title="启动前端项目的步骤："></a>启动前端项目的步骤：</h2><ol>
+<li>首先进入前端目录</li>
+</ol>
+<p> cd rag-project01-framework&#x2F;frontend</p>
+<ol start="2">
+<li>安装依赖（如果还没有安装的话）</li>
+</ol>
+<p> npm install</p>
+<ol start="3">
+<li>启动开发服务器</li>
+</ol>
+<p>npm run dev</p>
+<h3 id="一、-项目的逻辑解析"><a href="#一、-项目的逻辑解析" class="headerlink" title="一、 项目的逻辑解析"></a>一、 项目的逻辑解析</h3><h4 id="1-项目的“骨架”-文件结构"><a href="#1-项目的“骨架”-文件结构" class="headerlink" title="1. 项目的“骨架” - 文件结构"></a>1. 项目的“骨架” - 文件结构</h4><p>一个前端项目就像一栋建筑，文件和文件夹就是它的结构。</p>
+<ul>
+<li><p><code>package.json</code>：<strong>项目清单和“身份证”</strong>。它记录了项目叫什么名字、版本号多少、依赖了哪些第三方库（如 <code>vue</code>, <code>element-plus</code>, <code>echarts</code>），以及定义了一些快捷命令（如 <code>npm run dev</code>）。</p>
+</li>
+<li><p><code>vite.config.ts</code>：<strong>项目的“构建配置”</strong>。Vite 是我们的构建工具，这个文件告诉 Vite 如何打包我们的代码，比如我们在这里配置了 Element Plus 的自动导入插件。</p>
+</li>
+<li><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">src</span></span><br></pre></td></tr></table></figure>
+
+<p>目录：</p>
+<p>项目的“核心代码区”</p>
+<p>，我们绝大部分工作都在这里。</p>
+<ul>
+<li><code>main.ts</code>：<strong>项目的“入口”</strong>。程序从这里开始运行。它的主要工作是创建 Vue 应用实例，并把它“挂载”到 <code>index.html</code> 的一个 DOM 节点上（通常是 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code>）。我们还在这里引入了全局 CSS 样式。</li>
+<li><code>App.vue</code>：<strong>项目的“根组件”</strong>。可以把它想象成是页面的最外层容器，所有其他内容都被放置在它里面。在我们的项目中，因为页面简单，我们把所有逻辑都写在了 <code>App.vue</code> 里。</li>
+<li><code>assets</code> 目录：<strong>存放“静态资源”</strong>，比如图片、全局 CSS 文件、字体等。我们的背景图 <code>bg.jpg</code> 就放在这里。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-组件的“灵魂”-App-vue-内部逻辑"><a href="#2-组件的“灵魂”-App-vue-内部逻辑" class="headerlink" title="2. 组件的“灵魂” - App.vue 内部逻辑"></a>2. 组件的“灵魂” - <code>App.vue</code> 内部逻辑</h4><p>一个 Vue 组件（<code>.vue</code> 文件）通常由三部分组成，这三部分共同决定了页面的样子和行为：</p>
+<p><strong>A. <code>&lt;script setup lang=&quot;ts&quot;&gt;</code> - 负责数据和逻辑 (大脑)</strong></p>
+<p>这部分是组件的“大脑”，它定义了组件需要什么数据，以及如何处理这些数据。</p>
+<ul>
+<li><p><strong>数据 (State)</strong>：页面上需要展示和变化的信息。</p>
+<ul>
+<li><code>const tableData = ref([...])</code>：我们定义了一个名为 <code>tableData</code> 的响应式变量。<code>ref</code> 是 Vue 3 的一个函数，它包裹的数据一旦发生变化，页面上用到它的地方就会自动更新。这里它存储了左侧表格需要显示的数据。</li>
+<li><code>const chartContainer = ref&lt;HTMLElement | null&gt;(null)</code>：这个 <code>ref</code> 比较特殊，它不是为了存普通数据，而是为了获取模板中的一个 DOM 元素。它和模板里的 <code>ref=&quot;chartContainer&quot;</code> 属性相对应，让我们可以用 JavaScript 操作那个 <code>&lt;div&gt;</code>。</li>
+</ul>
+</li>
+<li><p><strong>逻辑 (Actions)</strong>：组件能做什么事。</p>
+<ul>
+<li><pre><code>initChart()
+</code></pre>
+<p>函数：这个函数是 ECharts 的核心逻辑。它负责：</p>
+<ol>
+<li>找到图表容器 <code>&lt;div&gt;</code>。</li>
+<li>初始化 ECharts 实例。</li>
+<li>定义一个 <code>option</code> 对象，这个对象就是图表的“设计图纸”，规定了标题、图例、X&#x2F;Y轴、数据系列（两条线）等所有细节。</li>
+<li>调用 <code>myChart.setOption(option)</code>，让 ECharts 根据“设计图纸”把图表画出来。</li>
+</ol>
+</li>
+<li><p><code>onMounted(() =&gt; { ... })</code>：这是一个<strong>生命周期钩子</strong>。<code>onMounted</code> 意味着“当组件已经被渲染到真实页面上之后”。我们把 <code>initChart()</code> 放在这里，是因为 ECharts 初始化时必须找到一个真实存在的 <code>&lt;div&gt;</code> 元素，如果组件还没渲染，这个 <code>&lt;div&gt;</code> 就不存在，程序就会报错。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>B. <code>&lt;template&gt;</code> - 负责结构和展示 (骨骼)</strong></p>
+<p>这部分是组件的“骨骼”和“皮肤”，用类似 HTML 的语法来描述页面的结构。</p>
+<ul>
+<li><code>&lt;div class=&quot;dashboard-container&quot;&gt;</code>：最外层的容器，设置了背景图和基本布局。</li>
+<li><code>&lt;div class=&quot;left-panel&quot;&gt;</code> 和 <code>&lt;div class=&quot;right-panel&quot;&gt;</code>：使用 Flexbox 布局将页面分为左右两块。</li>
+<li><code>&lt;el-table :data=&quot;tableData&quot;&gt;</code>：Element Plus 的表格组件。<code>:data=&quot;tableData&quot;</code> 是一个<strong>数据绑定</strong>，它告诉表格：“你的数据来源是我在 <code>&lt;script&gt;</code> 里定义的那个 <code>tableData</code> 变量”。</li>
+<li><code>&lt;div ref=&quot;chartContainer&quot;&gt;</code>：一个空的 <code>&lt;div&gt;</code>，但它很重要。它就像一个“画布”，我们通过 <code>ref</code> 属性给它取了个名字，好让 <code>&lt;script&gt;</code> 里的 ECharts 逻辑能找到它，并把图表画在里面。</li>
+</ul>
+<p><strong>C. <code>&lt;style scoped&gt;</code> - 负责样式 (外观)</strong></p>
+<p>这部分用 CSS 来定义组件的外观。</p>
+<ul>
+<li><code>scoped</code>：这个属性意味着这里的样式只对当前组件生效，不会影响到其他组件，避免了样式污染。</li>
+<li><code>.dashboard-container</code>, <code>.left-panel</code> 等：定义了布局、背景色、边框等。</li>
+<li><code>:deep()</code>：这是一个<strong>深度选择器</strong>。因为 Element Plus 的表格组件内部有很多它自己定义的 class，<code>scoped</code> 样式默认是穿透不进去的。我们用 <code>:deep()</code> 就可以“强行”修改子组件内部的样式，比如我们用它来把表格的背景变透明，文字变白色。</li>
+</ul>
+<h3 id="二、-通用前端项目实现流程-从需求到上线"><a href="#二、-通用前端项目实现流程-从需求到上线" class="headerlink" title="二、 通用前端项目实现流程 (从需求到上线)"></a>二、 通用前端项目实现流程 (从需求到上线)</h3><p>假设现在你拿到了一个新的页面设计图，你应该如何思考和执行？这是一个非常通用的流程。</p>
+<h4 id="第-1-步：需求分析与技术选型-思考阶段"><a href="#第-1-步：需求分析与技术选型-思考阶段" class="headerlink" title="第 1 步：需求分析与技术选型 (思考阶段)"></a>第 1 步：需求分析与技术选型 (思考阶段)</h4><ol>
+<li><p><strong>解构设计图</strong>：像拆解乐高一样，把页面拆分成不同的<strong>组件</strong>。比如一个典型的页面可以拆分为：顶部导航栏 (Header)、侧边栏 (Sidebar)、主要内容区 (Main Content)、页脚 (Footer)。我们这个项目就被拆成了 <code>LeftPanel</code> 和 <code>RightPanel</code> 两个概念区域。</p>
+</li>
+<li><p><strong>识别动静</strong>：哪些内容是写死的（比如标题“张泾河水文站监测”）？哪些内容是动态的、需要从后台获取的（比如表格数据、图表数据）？</p>
+</li>
+<li><p><strong>识别交互</strong>：用户可以做什么操作？点击按钮、鼠标悬停、输入文字？我们项目中隐含的交互是图表的 tooltip 提示。</p>
+</li>
+<li><p>技术选型</p>
+<p>：根据需求复杂度选择合适的工具。</p>
+<ul>
+<li><strong>框架</strong>：Vue &#x2F; React &#x2F; Angular? (我们选了 Vue 3)</li>
+<li><strong>UI 库</strong>：需不需要现成的组件库来提高效率？(我们选了 Element Plus 来快速创建表格)</li>
+<li><strong>数据可视化</strong>：需要图表吗？(我们选了 ECharts)</li>
+<li><strong>状态管理</strong>：如果项目很复杂，多个组件需要共享和修改同一份数据（比如购物车信息），可能需要 Pinia (Vuex 的替代品)。我们这个项目简单，就没用。</li>
+</ul>
+</li>
+</ol>
+<h4 id="第-2-步：项目搭建与静态实现-编码阶段-第一轮"><a href="#第-2-步：项目搭建与静态实现-编码阶段-第一轮" class="headerlink" title="第 2 步：项目搭建与静态实现 (编码阶段 - 第一轮)"></a>第 2 步：项目搭建与静态实现 (编码阶段 - 第一轮)</h4><ol>
+<li><strong>创建项目</strong>：使用脚手架工具（如 <code>npm create vue@latest</code>）创建项目骨架。</li>
+<li><strong>安装依赖</strong>：<code>npm install</code> 安装所有需要的第三方库。</li>
+<li><strong>搭建布局</strong>：先不管数据和逻辑，用 HTML 和 CSS 把页面的静态布局搭出来。先用假数据（mock data）填充内容，让页面看起来和设计图差不多。我们代码里的 <code>tableData</code> 和 ECharts <code>option</code> 里的 <code>data</code> 数组，在这一步就是<strong>假数据</strong>。</li>
+<li><strong>组件拆分</strong>：如果页面复杂，就把第一步里拆分出的组件创建成独立的 <code>.vue</code> 文件，然后在主页面（如 <code>App.vue</code>）中把它们像搭积木一样组合起来。</li>
+</ol>
+<h4 id="第-3-步：数据集成与逻辑开发-编码阶段-第二轮"><a href="#第-3-步：数据集成与逻辑开发-编码阶段-第二轮" class="headerlink" title="第 3 步：数据集成与逻辑开发 (编码阶段 - 第二轮)"></a>第 3 步：数据集成与逻辑开发 (编码阶段 - 第二轮)</h4><ol>
+<li><strong>对接API</strong>：如果数据来自后端，现在就是写 API 请求函数的时候了（通常使用 <code>axios</code> 或 <code>fetch</code>）。你会创建一个 <code>api</code> 目录来管理这些请求。</li>
+<li><strong>替换假数据</strong>：在组件的 <code>onMounted</code> 或其他合适的时机调用 API 函数，获取真实数据，然后用这些数据替换掉之前写的假数据。</li>
+<li><strong>实现交互逻辑</strong>：为按钮等元素绑定点击事件 (<code>@click</code>)，实现设计图要求的所有用户交互功能。</li>
+</ol>
+<h4 id="第-4-步：优化与部署"><a href="#第-4-步：优化与部署" class="headerlink" title="第 4 步：优化与部署"></a>第 4 步：优化与部署</h4><ol>
+<li><strong>代码优化</strong>：检查性能，处理边界情况（如数据加载中、加载失败、数据为空时的页面状态）。</li>
+<li><strong>打包构建</strong>：运行 <code>npm run build</code>，Vite 会把你的代码打包成浏览器认识的、经过优化的静态文件（HTML, CSS, JS），通常放在一个 <code>dist</code> 目录里。</li>
+<li><strong>部署</strong>：将 <code>dist</code> 目录里的所有文件上传到一个静态服务器上（如 Nginx、Netlify、Vercel 等），你的网站就上线了！</li>
+</ol>
+<h3 id="三、-这套思路是否通用？"><a href="#三、-这套思路是否通用？" class="headerlink" title="三、 这套思路是否通用？"></a>三、 这套思路是否通用？</h3><p><strong>答案是：核心思想和流程是高度通用的，但具体细节会因项目而异。</strong></p>
+<h4 id="通用的部分："><a href="#通用的部分：" class="headerlink" title="通用的部分："></a>通用的部分：</h4><ul>
+<li><strong>组件化思维</strong>：现代前端开发的核心就是组件化。无论是 Vue、React 还是 Angular，把 UI 拆分成可复用、可组合的组件，这个思想是完全一致的。</li>
+<li><strong>分步实现</strong>：先静态后动态，先布局后逻辑。这个流程能让你保持思路清晰，逐步攻克难题，几乎适用于所有项目。</li>
+<li><strong>数据驱动视图</strong>：你只关心如何管理数据（State），当数据变化时，框架（Vue&#x2F;React）会自动帮你更新页面（View）。这是现代前端框架的基石。</li>
+</ul>
+<h4 id="不同的部分："><a href="#不同的部分：" class="headerlink" title="不同的部分："></a>不同的部分：</h4><ul>
+<li><p>项目规模和复杂度</p>
+<p>：</p>
+<ul>
+<li><strong>小项目</strong>（如个人博客、展示页）：可能一个 <code>App.vue</code> 就够了，不需要状态管理，也不需要复杂的目录结构。</li>
+<li><strong>大项目</strong>（如电商网站、管理后台）：必须进行精细的组件拆分和目录规划（<code>views</code>, <code>components</code>, <code>api</code>, <code>utils</code>, <code>store</code> 等），并且几乎一定会用到状态管理库（Pinia&#x2F;Redux）和路由（Vue Router）。</li>
+</ul>
+</li>
+<li><p>项目类型</p>
+<p>：</p>
+<ul>
+<li><strong>数据可视化大屏</strong>（像我们做的）：重点在 ECharts 等图表库的熟练使用、CSS 布局和样式的美化。</li>
+<li><strong>重交互的表单应用</strong>：重点在表单校验、状态管理、用户输入处理。</li>
+<li><strong>内容型网站</strong>（如新闻门户）：重点在路由、SEO（搜索引擎优化）、性能加载。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结来说，你学习到的这套“解构 -&gt; 选型 -&gt; 搭建 -&gt; 开发 -&gt; 部署”的流程，是你应对任何前端项目的“万能公式”。</strong> 随着你经验的增长，你会在每个环节做出更成熟、更合适的决策。</p>
+<h2 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h2><p>div是指什么？</p>
+<p>css是指什么？</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io">WT</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io/2026/01/11/%E5%89%8D%E7%AB%AF/">https://wutaoblog.github.io/2026/01/11/前端/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wutaoblog.github.io" target="_blank">WT's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/01/11/%E8%B4%A6%E5%8F%B7%E4%BF%A1%E6%81%AF/" title="账号密码"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">账号密码</div></div><div class="info-2"><div class="info-item-1">一些账号  ak sk </div></div></div></a><a class="pagination-related" href="/2026/01/11/%E4%BB%B7%E5%80%BC%E5%B1%95%E7%A4%BA/" title="价值展示"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">价值展示</div></div><div class="info-2"><div class="info-item-1">价值展示 足够强大-领袖气质。 硬价值—-钱，颜值，身材，地位。价值越高，分数越高。钱可以装，不要寒酸气，颜值需要收拾，肌肉合适。软价值—-内在特质。幽默，领导力，光环效应，有主见。 无意识展示价值。 拉升关系。  吸引7步法 开场白–激发回复欲望，朋友圈，我的状态加感受，延续话题。 交换基本信息–只说半句，一句正经一句逗比。表演型人格 拉近距离–装b，有价值。侧面，让女生主动问。 形象塑造– 升温关系– 可得性– 邀约– 什么是黄毛？ 答案是有颜值有身材有物质条件有审美有学习力有方向感有执行力有原则有格局有边界有攻击性有主体性勇敢情绪稳定 </div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">Typora入门</div></div><div class="info-2"><div class="info-item-1">Typora入门 文本格式设置： 加粗：在要加粗的文本前后各输入两个星号 “**”，或选中文字后按快捷键 Ctrl+B。 斜体：在要斜体的文本前后各输入一个星号 “*”，快捷键为 Ctrl+I。 粗斜体：在要设置的文本前后各输入三个星号 “***”。 高亮：在要高亮的文本前后各输入两个等号 “&#x3D;&#x3D;”，需在偏好设置的 Markdown 扩展语法内启用。 删除线：在要添加删除线的文本前后各输入两个波浪号 “~~”，快捷键为 Alt+Shift+5。 下划线：选中文字后按快捷键 Ctrl+U，或使用 HTML 标签文本。   标题设置： 输入 “#” 加空格，可创建一级标题，快捷键为 Ctrl+1。 输入 “##” 加空格，可创建二级标题，快捷键为 Ctrl+2，以此类推，最多支持六级标题。   列表创建： 无序列表：使用 “*”“-” 或 “+” 加空格都可以创建，快捷键为 Ctrl+Shift+L。 有序列表：使用 “1.”“2.”“3.” 加空格创建，快捷键为 Ctrl+Shift+O。 任务列表：语法为 “- ()”，减号后、括号内和括号后各有一个空格，括号...</div></div></div></a><a class="pagination-related" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">Agent 全面技能</div></div><div class="info-2"><div class="info-item-1">Agent 全面技能（Level-2&#x2F;3）1. 语言与生态 Python 异步&#x2F;协程 FastAPI &#x2F; Flask Node.js + LangChain.js  2. 算法与微调 LoRA &#x2F; PEFT 微调 RLHF（强化学习对齐） 多模态（CLIP、Whisper）  3. 记忆系统 向量数据库（Milvus, Pinecone） 图数据库（Neo4j） 缓存（Redis 语义缓存）  4. Planning 策略 ReAct &#x2F; Reflexion &#x2F; Plan-and-Execute 多 Agent 协作（CrewAI、AutoGen） 状态机与工作流引擎  5. 工具与集成 Function Calling（OpenAI JSON Mode） MCP 协议（Model-Context-Protocol） API Gateway、OAuth、Webhook  6. 安全与合规 Prompt 注入防御 PII 脱敏、审计日志 RBAC 权限模型  7. 运维与评测 LLMOps（CI&#x2F;CD、A&#x2...</div></div></div></a><a class="pagination-related" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">AI agent 开发知识总结</div></div><div class="info-2"><div class="info-item-1">AI agent 开发知识总结什么是agent？ Agent（智能体 &#x2F; 自主代理）在 LLM 驱动的语境下，Agent 指以大规模语言模型为核心控制器（brain），配合记忆（memory）、工具调用（tool use）、规划（planning）与行动（action）模块，形成能够感知环境、制定计划并调用外部 API、函数或机器人执行多步任务，最终完成复杂目标的自治软件实体。它通常遵循观察（observe）→ 思考（reason）→ 行动（act）的循环，支持多轮对话、状态更新和任务拆解。一句话解释就是：给 AI 装上记忆、手脚和工具，让它像人一样自己思考、查资料、做任务，直到把事情办完。 本质上，所有的 Agent 设计模式都是将人类的思维、管理模式以结构化prompt的方式告诉大模型来进行规划，并调用工具执行，且不断迭代的方法,从这个角度来说，Agent设计模式很像传统意义上的程序开发范式，但是泛化和场景通用性远大于传统的程序开发范式。在Agent设计模式中，Prompt可以类比为Python这类高级编程语言，大模型可以类比于程序语言编译&amp;解释器。 任务规...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%A7%86%E8%A7%89%E7%AE%97%E6%B3%95/" title="视觉算法"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">视觉算法</div></div><div class="info-2"><div class="info-item-1">视觉算法1. CV子类CV 包含了图像分类、物体检测、图像分割、人脸识别、OCR（文字识别）、三维重建等众多子方向。 一、图像分类图像分类是 CV 最基础的任务，目标是给图像分配唯一的类别标签（如 “猫”“狗”“汽车”）。    类型 经典算法 &#x2F; 模型 核心特点 &amp; 适用场景    传统算法 1. HOG+SVM2. SIFT+BoW3. KNN &#x2F; 朴素贝叶斯 1. HOG+SVM：早期行人 &#x2F; 车辆分类；2. SIFT+BoW：基于特征词袋的通用分类；3. 简单场景，精度低   深度学习 1. LeNet-5（1998）2. AlexNet（2012）3. VGG-16&#x2F;19（2014）4. GoogLeNet（Inception）5. ResNet（2015）6. MobileNet（2017）7. ViT（2020） 1. LeNet：CNN 开山之作（手写数字识别）；2. AlexNet：ImageNet 夺冠，开启深度学习 CV 时代；3. VGG：规整卷积核设计，易迁移；4. GoogLeNet：多尺度特征融合；5....</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/" title="项目经验"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">项目经验</div></div><div class="info-2"><div class="info-item-1">Project Experience1 rag知识库项目1.1 工程化落地我的理解是，先拿到文本，進行結構化處理（比如pdf轉爲md，需要人工著重處理表格等不規則文本），然後，將處理好的文本通過bgem3模型進行向量化處理，存入milvus等向量知識庫，構建langchain問答鏈（如何理解用戶問題，如何書寫查詢邏輯，增加模型生成結果時的對齊算法，增加rerank算法對檢索到的答案重新排序后喂給大模型進行輸出）。 核心流程：原始文档 → 文档预处理（结构化+清洗）→ 文档切分+增强 → 向量化/索引构建 → 检索（多策略召回）→ 重排（精排）→ 提示工程+生成 → 输出/反馈优化 核心逻辑：用标准化的文档处理保证数据质量 → 用多策略检索保证召回率 → 用重排保证准确率 → 用提示工程 + 幻觉控制保证生成质量 → 用工程化手段保证稳定性。 阶段 1：数据层：文档获取 &amp; 版本管理（解决 “数据来源可靠 + 版本可追溯”）核心目标：从多渠道获取原始文档，建立「文档版本控制机制」，避免数据丢失或版本混乱，为后续处理提供 “干净、可追溯的数据源”。 阶段 2：文档理解层：解析...</div></div></div></a><a class="pagination-related" href="/2026/01/11/MY%20mind-%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%B5%81%E9%80%9D%E7%9A%84%E8%AE%B0%E5%BF%86/" title="MY mind-记录时间流逝的记忆"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">MY mind-记录时间流逝的记忆</div></div><div class="info-2"><div class="info-item-1">MY mind-记录时间流逝的记忆记录时间流逝的记忆，你的思想可以被改变但是不能没有痕迹！！！ MY idea如果你有一个好的想法，你可以从0开始的记录下来。  我没有什么爱好，除了健身，看书，学英语。早睡早起，晚上健身，早上看书，周末学习英语。 我想使用AI开个账号。做啥呢？科普、？短视频？短剧？图文？小说？还是agent复现？  MY plan如果你有什么想做的事情，你可以流程化的记录下来。 1.遇到大量相同的文本，你如何进行去重处理呢？百亿文档去重算法: MINHASH_LSH 文档去重整体流程：   MY word记录一些思想碰撞的话语。 1.AI学习的方法：你能与多少智能体（人+AI）形成价值共生网络，决定了你的成功上限。 停止收藏”100个AI工具清单”，转而研究”1个问题的10种AI解法”。 黄金法则：在30%的精力里创新，用70%的精力把创新成果”坚持”到极致。例如，你发现AI+小红书是一个机会点（创新），接下来90天每天发3篇、测试30种模板、迭代100次（坚持），直到流程SOP化。 MY work AI视觉相关的研究 AI agent相关的开发 dify和fa...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">WT</div><div class="author-info-description">记录学习路上的点点滴滴，记得好好生活哦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/taogehengq"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="toc-number">1.</span> <span class="toc-text">前端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">启动前端项目的步骤：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81-%E9%A1%B9%E7%9B%AE%E7%9A%84%E9%80%BB%E8%BE%91%E8%A7%A3%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text">一、 项目的逻辑解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E9%A1%B9%E7%9B%AE%E7%9A%84%E2%80%9C%E9%AA%A8%E6%9E%B6%E2%80%9D-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">1. 项目的“骨架” - 文件结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%BB%84%E4%BB%B6%E7%9A%84%E2%80%9C%E7%81%B5%E9%AD%82%E2%80%9D-App-vue-%E5%86%85%E9%83%A8%E9%80%BB%E8%BE%91"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">2. 组件的“灵魂” - App.vue 内部逻辑</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E9%80%9A%E7%94%A8%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B-%E4%BB%8E%E9%9C%80%E6%B1%82%E5%88%B0%E4%B8%8A%E7%BA%BF"><span class="toc-number">1.1.2.</span> <span class="toc-text">二、 通用前端项目实现流程 (从需求到上线)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC-1-%E6%AD%A5%EF%BC%9A%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90%E4%B8%8E%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B-%E6%80%9D%E8%80%83%E9%98%B6%E6%AE%B5"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">第 1 步：需求分析与技术选型 (思考阶段)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC-2-%E6%AD%A5%EF%BC%9A%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E4%B8%8E%E9%9D%99%E6%80%81%E5%AE%9E%E7%8E%B0-%E7%BC%96%E7%A0%81%E9%98%B6%E6%AE%B5-%E7%AC%AC%E4%B8%80%E8%BD%AE"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">第 2 步：项目搭建与静态实现 (编码阶段 - 第一轮)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC-3-%E6%AD%A5%EF%BC%9A%E6%95%B0%E6%8D%AE%E9%9B%86%E6%88%90%E4%B8%8E%E9%80%BB%E8%BE%91%E5%BC%80%E5%8F%91-%E7%BC%96%E7%A0%81%E9%98%B6%E6%AE%B5-%E7%AC%AC%E4%BA%8C%E8%BD%AE"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">第 3 步：数据集成与逻辑开发 (编码阶段 - 第二轮)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC-4-%E6%AD%A5%EF%BC%9A%E4%BC%98%E5%8C%96%E4%B8%8E%E9%83%A8%E7%BD%B2"><span class="toc-number">1.1.2.4.</span> <span class="toc-text">第 4 步：优化与部署</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E8%BF%99%E5%A5%97%E6%80%9D%E8%B7%AF%E6%98%AF%E5%90%A6%E9%80%9A%E7%94%A8%EF%BC%9F"><span class="toc-number">1.1.3.</span> <span class="toc-text">三、 这套思路是否通用？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E7%9A%84%E9%83%A8%E5%88%86%EF%BC%9A"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">通用的部分：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E9%83%A8%E5%88%86%EF%BC%9A"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">不同的部分：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80"><span class="toc-number">1.2.</span> <span class="toc-text">前端基础</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 全面技能"/></a><div class="content"><a class="title" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能">Agent 全面技能</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 完整技术栈"/></a><div class="content"><a class="title" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈">RAG 完整技术栈</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG/" title="RAG 入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 入门"/></a><div class="content"><a class="title" href="/2026/01/11/RAG/" title="RAG 入门">RAG 入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI agent 开发知识总结"/></a><div class="content"><a class="title" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结">AI agent 开发知识总结</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora入门"/></a><div class="content"><a class="title" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门">Typora入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By WT</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

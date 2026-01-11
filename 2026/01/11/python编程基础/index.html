@@ -1,0 +1,170 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>python编程基础 | WT's Blog</title><meta name="author" content="WT"><meta name="copyright" content="WT"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="python编程基础1.面向对象编程 案列分析  2.类的运用 3.函数的定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python编程基础">
+<meta property="og:url" content="https://wutaoblog.github.io/2026/01/11/python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="WT&#39;s Blog">
+<meta property="og:description" content="python编程基础1.面向对象编程 案列分析  2.类的运用 3.函数的定义">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png">
+<meta property="article:published_time" content="2026-01-11T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-11T07:13:09.259Z">
+<meta property="article:author" content="WT">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "python编程基础",
+  "url": "https://wutaoblog.github.io/2026/01/11/python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/",
+  "image": "https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png",
+  "datePublished": "2026-01-11T02:00:00.000Z",
+  "dateModified": "2026-01-11T07:13:09.259Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "WT",
+      "url": "https://wutaoblog.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wutaoblog.github.io/2026/01/11/python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'python编程基础',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(https://s2.loli.net/2024/01/08/2NLQjw1oVCxdg4v.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">WT's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">python编程基础</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archives"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">python编程基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-11T07:13:09.259Z" title="更新于 2026-01-11 15:13:09">2026-01-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="python编程基础"><a href="#python编程基础" class="headerlink" title="python编程基础"></a>python编程基础</h1><h2 id="1-面向对象编程"><a href="#1-面向对象编程" class="headerlink" title="1.面向对象编程"></a>1.面向对象编程</h2><p><img src="C:\Users\vip\Desktop\09.上午内容回顾.mp4_1760932435213.jpg" alt="面向对象"></p>
+<p><strong>案列分析</strong></p>
+<p><img src="C:\Users\vip\Desktop\15.案例-烤地瓜.mp4_1761028668244.jpg"></p>
+<h2 id="2-类的运用"><a href="#2-类的运用" class="headerlink" title="2.类的运用"></a>2.类的运用</h2><p><img src="C:\Users\vip\Desktop\12.上午内容回顾.mp4_1761123420287.jpg" alt="2"></p>
+<h2 id="3-函数的定义"><a href="#3-函数的定义" class="headerlink" title="3.函数的定义"></a>3.函数的定义</h2><p><img src="C:\Users\vip\Desktop\隋唐图片\20.类方法和静态方法详解.mp4_1761207779448.jpg"></p>
+<p><img src="C:\Users\vip\Desktop\隋唐图片\22.今日内容总结.mp4_1761724496745.jpg"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io">WT</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://wutaoblog.github.io/2026/01/11/python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">https://wutaoblog.github.io/2026/01/11/python编程基础/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://wutaoblog.github.io" target="_blank">WT's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/python/">python</a></div><div class="post-share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/01/11/MY%20mind-%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%B5%81%E9%80%9D%E7%9A%84%E8%AE%B0%E5%BF%86/" title="MY mind-记录时间流逝的记忆"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MY mind-记录时间流逝的记忆</div></div><div class="info-2"><div class="info-item-1">MY mind-记录时间流逝的记忆记录时间流逝的记忆，你的思想可以被改变但是不能没有痕迹！！！ MY idea如果你有一个好的想法，你可以从0开始的记录下来。  我没有什么爱好，除了健身，看书，学英语。早睡早起，晚上健身，早上看书，周末学习英语。 我想使用AI开个账号。做啥呢？科普、？短视频？短剧？图文？小说？还是agent复现？  MY plan如果你有什么想做的事情，你可以流程化的记录下来。 1.遇到大量相同的文本，你如何进行去重处理呢？百亿文档去重算法: MINHASH_LSH 文档去重整体流程：   MY word记录一些思想碰撞的话语。 1.AI学习的方法：你能与多少智能体（人+AI）形成价值共生网络，决定了你的成功上限。 停止收藏”100个AI工具清单”，转而研究”1个问题的10种AI解法”。 黄金法则：在30%的精力里创新，用70%的精力把创新成果”坚持”到极致。例如，你发现AI+小红书是一个机会点（创新），接下来90天每天发3篇、测试30种模板、迭代100次（坚持），直到流程SOP化。 MY work AI视觉相关的研究 AI agent相关的开发 dify和fa...</div></div></div></a><a class="pagination-related" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Typora入门</div></div><div class="info-2"><div class="info-item-1">Typora入门 文本格式设置： 加粗：在要加粗的文本前后各输入两个星号 “**”，或选中文字后按快捷键 Ctrl+B。 斜体：在要斜体的文本前后各输入一个星号 “*”，快捷键为 Ctrl+I。 粗斜体：在要设置的文本前后各输入三个星号 “***”。 高亮：在要高亮的文本前后各输入两个等号 “&#x3D;&#x3D;”，需在偏好设置的 Markdown 扩展语法内启用。 删除线：在要添加删除线的文本前后各输入两个波浪号 “~~”，快捷键为 Alt+Shift+5。 下划线：选中文字后按快捷键 Ctrl+U，或使用 HTML 标签文本。   标题设置： 输入 “#” 加空格，可创建一级标题，快捷键为 Ctrl+1。 输入 “##” 加空格，可创建二级标题，快捷键为 Ctrl+2，以此类推，最多支持六级标题。   列表创建： 无序列表：使用 “*”“-” 或 “+” 加空格都可以创建，快捷键为 Ctrl+Shift+L。 有序列表：使用 “1.”“2.”“3.” 加空格创建，快捷键为 Ctrl+Shift+O。 任务列表：语法为 “- ()”，减号后、括号内和括号后各有一个空格，括号...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/11/MY%20mind-%E8%AE%B0%E5%BD%95%E6%97%B6%E9%97%B4%E6%B5%81%E9%80%9D%E7%9A%84%E8%AE%B0%E5%BF%86/" title="MY mind-记录时间流逝的记忆"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">MY mind-记录时间流逝的记忆</div></div><div class="info-2"><div class="info-item-1">MY mind-记录时间流逝的记忆记录时间流逝的记忆，你的思想可以被改变但是不能没有痕迹！！！ MY idea如果你有一个好的想法，你可以从0开始的记录下来。  我没有什么爱好，除了健身，看书，学英语。早睡早起，晚上健身，早上看书，周末学习英语。 我想使用AI开个账号。做啥呢？科普、？短视频？短剧？图文？小说？还是agent复现？  MY plan如果你有什么想做的事情，你可以流程化的记录下来。 1.遇到大量相同的文本，你如何进行去重处理呢？百亿文档去重算法: MINHASH_LSH 文档去重整体流程：   MY word记录一些思想碰撞的话语。 1.AI学习的方法：你能与多少智能体（人+AI）形成价值共生网络，决定了你的成功上限。 停止收藏”100个AI工具清单”，转而研究”1个问题的10种AI解法”。 黄金法则：在30%的精力里创新，用70%的精力把创新成果”坚持”到极致。例如，你发现AI+小红书是一个机会点（创新），接下来90天每天发3篇、测试30种模板、迭代100次（坚持），直到流程SOP化。 MY work AI视觉相关的研究 AI agent相关的开发 dify和fa...</div></div></div></a><a class="pagination-related" href="/2026/01/11/RAG/" title="RAG 入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">RAG 入门</div></div><div class="info-2"><div class="info-item-1">RAG什么是RAG? RAG（Retrieval-Augmented Generation，检索增强生成）一种将“信息检索”与“生成式大模型”耦合的架构。系统先通过稠密向量或稀疏检索，从大规模外部知识库中定位与当前查询最相关的文档片段（context），再把这些片段连同原始查询一起送入大语言模型（LLM）作为 prompt 的上下文，让模型在生成回答时既利用内部参数知识，又利用最新的外部知识，从而显著降低幻觉、提升时效性与可溯源性。其典型流程：Indexing → Retrieval → Augmentation → Generation。一句话解释就是：先用“搜索引擎”找到相关文档，再让“作文高手”参考这些资料写答案，既新鲜又靠谱。 实现方式 1.1平台实现 fastgpt、coze、dify等 1.2代码实现 代码有哪些技术栈？  具体技术细节有哪些？  文档提取  1.1txt问本提取 1.2pdf提取工具  1.3表格提前工具 使用Llama Hub中的Database Reader工具连接MySQL数据库，并将数据库表数据加载到Llama Index的Documents...</div></div></div></a><a class="pagination-related" href="/2026/01/11/typora%E5%85%A5%E9%97%A8/" title="hexo入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">hexo入门</div></div><div class="info-2"><div class="info-item-1">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;  More info: Writing Run server1$ hexo server  More info: Server Generate static files1$ hexo generate  More info: Generating Deploy to remote sites1$ hexo deploy  More info: Deployment </div></div></div></a><a class="pagination-related" href="/2026/01/11/%E8%B4%A6%E5%8F%B7%E4%BF%A1%E6%81%AF/" title="账号密码"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">账号密码</div></div><div class="info-2"><div class="info-item-1">一些账号  ak sk </div></div></div></a><a class="pagination-related" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">Typora入门</div></div><div class="info-2"><div class="info-item-1">Typora入门 文本格式设置： 加粗：在要加粗的文本前后各输入两个星号 “**”，或选中文字后按快捷键 Ctrl+B。 斜体：在要斜体的文本前后各输入一个星号 “*”，快捷键为 Ctrl+I。 粗斜体：在要设置的文本前后各输入三个星号 “***”。 高亮：在要高亮的文本前后各输入两个等号 “&#x3D;&#x3D;”，需在偏好设置的 Markdown 扩展语法内启用。 删除线：在要添加删除线的文本前后各输入两个波浪号 “~~”，快捷键为 Alt+Shift+5。 下划线：选中文字后按快捷键 Ctrl+U，或使用 HTML 标签文本。   标题设置： 输入 “#” 加空格，可创建一级标题，快捷键为 Ctrl+1。 输入 “##” 加空格，可创建二级标题，快捷键为 Ctrl+2，以此类推，最多支持六级标题。   列表创建： 无序列表：使用 “*”“-” 或 “+” 加空格都可以创建，快捷键为 Ctrl+Shift+L。 有序列表：使用 “1.”“2.”“3.” 加空格创建，快捷键为 Ctrl+Shift+O。 任务列表：语法为 “- ()”，减号后、括号内和括号后各有一个空格，括号...</div></div></div></a><a class="pagination-related" href="/2026/01/11/%E5%89%8D%E7%AB%AF/" title="前端起步"><img class="cover" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-11</div><div class="info-item-2">前端起步</div></div><div class="info-2"><div class="info-item-1">前端启动前端项目的步骤： 首先进入前端目录   cd rag-project01-framework&#x2F;frontend  安装依赖（如果还没有安装的话）   npm install  启动开发服务器  npm run dev 一、 项目的逻辑解析1. 项目的“骨架” - 文件结构一个前端项目就像一栋建筑，文件和文件夹就是它的结构。  package.json：项目清单和“身份证”。它记录了项目叫什么名字、版本号多少、依赖了哪些第三方库（如 vue, element-plus, echarts），以及定义了一些快捷命令（如 npm run dev）。  vite.config.ts：项目的“构建配置”。Vite 是我们的构建工具，这个文件告诉 Vite 如何打包我们的代码，比如我们在这里配置了 Element Plus 的自动导入插件。  1src  目录： 项目的“核心代码区” ，我们绝大部分工作都在这里。  main.ts：项目的“入口”。程序从这里开始运行。它的主要工作是创建 Vue 应用实例，并把它“挂载”到 index.html 的一个 DOM 节点上（通常是 ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">WT</div><div class="author-info-description">记录学习路上的点点滴滴，记得好好生活哦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/taogehengq"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#python%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">python编程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">1.面向对象编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B1%BB%E7%9A%84%E8%BF%90%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">2.类的运用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.3.</span> <span class="toc-text">3.函数的定义</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Agent 全面技能"/></a><div class="content"><a class="title" href="/2026/01/11/Agent%20%E5%85%A8%E9%9D%A2%E6%8A%80%E8%83%BD/" title="Agent 全面技能">Agent 全面技能</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 完整技术栈"/></a><div class="content"><a class="title" href="/2026/01/11/RAG%20%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E6%A0%88/" title="RAG 完整技术栈">RAG 完整技术栈</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/RAG/" title="RAG 入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG 入门"/></a><div class="content"><a class="title" href="/2026/01/11/RAG/" title="RAG 入门">RAG 入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI agent 开发知识总结"/></a><div class="content"><a class="title" href="/2026/01/11/AI%20agent%20%E5%BC%80%E5%8F%91%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" title="AI agent 开发知识总结">AI agent 开发知识总结</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门"><img src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/cover/default_bg3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Typora入门"/></a><div class="content"><a class="title" href="/2026/01/11/hexo%E5%85%A5%E9%97%A8/" title="Typora入门">Typora入门</a><time datetime="2026-01-11T02:00:00.000Z" title="发表于 2026-01-11 10:00:00">2026-01-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By WT</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
